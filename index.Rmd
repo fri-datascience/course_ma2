@@ -1,0 +1,20 @@
+--- 
+title: "Mathematics 2 - exercises"
+author: "Erik Štrumbelj and Žiga Virk"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+documentclass: book
+bibliography: [book.bib]
+biblio-style: apalike
+link-citations: yes
+url: https://fri-datascience.github.io/course_ma2/
+description: "Course notes"
+nocite: | 
+  @R-base, @Ross1998, @Jagannathan2015
+---
+
+
+
+# Preface {-}
+
+These are the exercises for the Mathematics 2 course of the Data Science Master's at University of Ljubljana, Faculty of Computer and Information Science.

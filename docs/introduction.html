@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 1 Gradient-based methods | Mathematics 2 - exercises</title>
+  <meta name="description" content="Course notes" />
+  <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 1 Gradient-based methods | Mathematics 2 - exercises" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://fri-datascience.github.io/course_ma2/" />
+  
+  <meta property="og:description" content="Course notes" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 1 Gradient-based methods | Mathematics 2 - exercises" />
+  
+  <meta name="twitter:description" content="Course notes" />
+  
+
+<meta name="author" content="Erik Štrumbelj and Žiga Virk" />
+
+
+<meta name="date" content="2021-03-21" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="index.html"/>
+<link rel="next" href="references.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Mathematics 2</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Gradient-based methods</a><ul>
+<li class="chapter" data-level="1.1" data-path="introduction.html"><a href="introduction.html#theoretical-exercises"><i class="fa fa-check"></i><b>1.1</b> Theoretical exercises</a></li>
+<li class="chapter" data-level="1.2" data-path="introduction.html"><a href="introduction.html#practical-problems"><i class="fa fa-check"></i><b>1.2</b> Practical problems</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>      
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Mathematics 2 - exercises</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="introduction" class="section level1">
+<h1><span class="header-section-number">Chapter 1</span> Gradient-based methods</h1>
+<style>
+.fold-btn { 
+  float: right; 
+  margin: 5px 5px 0 0;
+}
+.fold { 
+  border: 1px solid black;
+  min-height: 40px;
+}
+</style>
+<script type="text/javascript">
+$(document).ready(function() {
+  $folds = $(".fold");
+  $folds.wrapInner("<div class=\"fold-blck\">"); // wrap a div container around content
+  $folds.prepend("<button class=\"fold-btn\">Unfold Solution</button>");  // add a button
+  $(".fold-blck").toggle();  // fold all blocks
+  $(".fold-btn").on("click", function() {  // add onClick event
+    $(this).text($(this).text() === "Fold Solution" ? "Unfold Solution" : "Fold Solution");  // if the text equals "Fold", change it to "Unfold"or else to "Fold" 
+    $(this).next(".fold-blck").toggle("linear");  // "swing" is the default easing function. This can be further customized in its speed or the overall animation itself.
+  })
+});
+</script>
+<div id="theoretical-exercises" class="section level2">
+<h2><span class="header-section-number">1.1</span> Theoretical exercises</h2>
+
+<div class="exercise">
+<p><span id="exr:unnamed-chunk-2" class="exercise"><strong>Exercise 1.1  (Classes of functions)  </strong></span>Let <span class="math inline">\(L, \alpha, \beta&gt;0, A, B\subseteq \mathbb{R}\)</span> and define:</p>
+<ul>
+<li><span class="math inline">\(\mathcal{L}( L,A,B)\)</span> as the set of all <span class="math inline">\(L\)</span>-Lipschitz functions <span class="math inline">\(A \to B\)</span>.</li>
+<li><span class="math inline">\(\mathcal{S}(\beta, A,B)\)</span> as the set of all <span class="math inline">\(\beta\)</span>-smooth functions <span class="math inline">\(A \to B\)</span>.</li>
+<li><span class="math inline">\(\mathcal{C}(\alpha, A,B)\)</span> as the set of all <span class="math inline">\(\alpha\)</span>-strongly convex functions <span class="math inline">\(A \to B\)</span>.</li>
+</ul>
+<p>Questions:</p>
+<ol style="list-style-type: lower-alpha">
+<li>For which <span class="math inline">\(B\)</span> are <span class="math inline">\(\mathcal{L}( L,A,B)\)</span>, <span class="math inline">\(\mathcal{S}(\beta, A,B)\)</span>, and <span class="math inline">\(\mathcal{C}(\alpha, A,B)\)</span> vector spaces?</li>
+<li>Are <span class="math inline">\(\mathcal{L}( L,A,B)\)</span>, <span class="math inline">\(\mathcal{S}(\beta, A,B)\)</span>, and <span class="math inline">\(\mathcal{C}(\alpha, A,B)\)</span> closed for compositions, i.e., if <span class="math inline">\(f,g\)</span> are from one of the above sets with <span class="math inline">\(A=\mathbb{R}\)</span>, is <span class="math inline">\(f \circ g\)</span> also from the same class?</li>
+<li>Are <span class="math inline">\(\mathcal{L}( L,A,B)\)</span>, <span class="math inline">\(\mathcal{S}(\beta, A,B)\)</span>, and <span class="math inline">\(\mathcal{C}(\alpha, A,B)\)</span> closed for products, i.e., if <span class="math inline">\(f,g\)</span> are from one of the above sets, is <span class="math inline">\(f \cdot g\)</span> also from the same class?</li>
+<li>Are non-negative function from <span class="math inline">\(\mathcal{L}( L,A,B)\)</span>, <span class="math inline">\(\mathcal{S}(\beta, A,B)\)</span>, and <span class="math inline">\(\mathcal{C}(\alpha, A,B)\)</span> closed square roots, i.e., if <span class="math inline">\(f&gt;0\)</span> is from one of the above sets, is <span class="math inline">\(\sqrt{f}\)</span> also from the same class?</li>
+<li><p>Some of the answers to the previous questions are negative. By manipulating or restricting parameters <span class="math inline">\(L, \alpha, \beta\)</span>, <span class="math inline">\(A\)</span> and the images of functions develop versions of the above statements with affirmative answers.</p>
+For example, if <span class="math inline">\(f,g\in \mathcal{L}( L,\mathbb{R},\mathbb{R})\)</span> then <span class="math inline">\(f \circ g\)</span> might not be in <span class="math inline">\(\mathcal{L}( L,\mathbb{R},\mathbb{R})\)</span>. However <span class="math inline">\(f \circ g \in \mathcal{L}( L^2,\mathbb{R}, \mathbb{R})\)</span>. Think about why this is true. On a similar note, if <span class="math inline">\(f,g\in \mathcal{L}( L,\mathbb{R},[a,b])\)</span> for some positive <span class="math inline">\(a&lt;b\)</span> then <span class="math inline">\(f\cdot g \in \mathcal{L}( 2Lb,\mathbb{R},[a^2,b^2])\)</span> for some <span class="math inline">\(a&#39;,b&#39;, L&#39;\)</span>.
+</div>
+</li>
+</ol>
+<div class="fold">
+
+<div class="solution">
+<p> <span class="solution"><em>Solution. </em></span>  <em>solution here</em></p>
+</div>
+
+</div>
+
+<div class="exercise">
+<span id="exr:unnamed-chunk-4" class="exercise"><strong>Exercise 1.2  (Gradient descent)  </strong></span>Let <span class="math inline">\(f(x,y)=2x + e^{2x} + y^2\)</span>. Function <span class="math inline">\(f\)</span> restricted to <span class="math inline">\(K=[-3,3]\times [-3,3]\)</span> is Lipschitz, smooth and strongly convex. Find some corresponding (preferably optimal) constants <span class="math inline">\(L, \alpha\)</span> and <span class="math inline">\(\beta\)</span> on <span class="math inline">\(K\)</span>. Prove that <span class="math inline">\(f\)</span> is convex. Determine the optimal learning rate <span class="math inline">\(\gamma\)</span> for the gradient descent method for this function.
+</div>
+
+<div class="fold">
+
+<div class="solution">
+<p> <span class="solution"><em>Solution. </em></span>  <em>solution here</em></p>
+</div>
+
+</div>
+
+<div class="exercise">
+<p><span id="exr:unnamed-chunk-6" class="exercise"><strong>Exercise 1.3  (Gradient descent)  </strong></span> Let <span class="math inline">\(f(x,y)= (x+y)^2 + (x-2y-3)^2\)</span>. Starting with <span class="math inline">\(x_1=(0,1)\)</span>:</p>
+<ol style="list-style-type: lower-alpha">
+<li>What is the minimal function value that can be achieved with one step of the gradient descent, i.e., find the minimum of <span class="math inline">\(f(x_2)\)</span>.</li>
+<li>How close to the actual minumum <span class="math inline">\(x^*\)</span> of function <span class="math inline">\(f\)</span> can we get with one step of the gradient descent, i.e., find the minimum of the distance from <span class="math inline">\(x^*\)</span> to <span class="math inline">\(x_2\)</span>.
+</div>
+</li>
+</ol>
+<div class="fold">
+
+<div class="solution">
+<p> <span class="solution"><em>Solution. </em></span>  <em>solution here</em></p>
+</div>
+
+</div>
+</div>
+<div id="practical-problems" class="section level2">
+<h2><span class="header-section-number">1.2</span> Practical problems</h2>
+<p>Find the optimum of these functions using the methods and techniques we learned in this course:</p>
+
+<div class="exercise">
+<p><span id="exr:unnamed-chunk-8" class="exercise"><strong>Exercise 1.4  (Minimization problem - the Ackley function)  </strong></span><span class="math display">\[f(x_0 \cdots x_n) = -20 \exp\left(-0.2 \sqrt{\frac{1}{n} \sum_{i=1}^n x_i^2}\right) - \exp\left(\frac{1}{n} \sum_{i=1}^n cos(2\pi x_i)\right) + 20 + e\]</span></p>
+<p><span class="math display">\[-32 \leq x_i \leq 32\]</span></p>
+<span class="math display">\[\text{minimum at }f(0, \cdots, 0) = 0\]</span>
+</div>
+
+
+<div class="exercise">
+<p><span id="exr:unnamed-chunk-9" class="exercise"><strong>Exercise 1.5  (Minimization problem - an exponential function)  </strong></span><span class="math display">\[f(x_1 \cdots x_n) = \sum_{i=1}^n e^{ix_i}i + \alpha\]</span></p>
+<p><span class="math display">\[\alpha = -\sum_{i=1}^n e^{-5.12i}\]</span></p>
+<p><span class="math display">\[-5.12 \leq x_i \leq 5.12\]</span></p>
+<span class="math display">\[\text{minimum at }f(-5.12, \cdots, -5.12) = 0\]</span>
+</div>
+
+
+<div class="exercise">
+<p><span id="exr:unnamed-chunk-10" class="exercise"><strong>Exercise 1.6  (Minimization problem - an exponential function)  </strong></span><span class="math display">\[f(x_1 \cdots x_n) = \sum_{i=1}^n e^{ix_i}i + \alpha\]</span></p>
+<p><span class="math display">\[\alpha = -\sum_{i=1}^n e^{-5.12i}\]</span></p>
+<p><span class="math display">\[-5.12 \leq x_i \leq 5.12\]</span></p>
+<span class="math display">\[\text{minimum at }f(-5.12, \cdots, -5.12) = 0\]</span>
+</div>
+
+
+<div class="exercise">
+<p><span id="exr:unnamed-chunk-11" class="exercise"><strong>Exercise 1.7  (Minimization problem - an exponential function)  </strong></span><span class="math display">\[f(x_1 \cdots x_n) = \sum_{i=1}^n e^{ix_i}i + \alpha\]</span></p>
+<p><span class="math display">\[\alpha = -\sum_{i=1}^n e^{-5.12i}\]</span></p>
+<p><span class="math display">\[-5.12 \leq x_i \leq 5.12\]</span></p>
+<span class="math display">\[\text{minimum at }f(-5.12, \cdots, -5.12) = 0\]</span>
+</div>
+
+
+<div class="exercise">
+<p><span id="exr:unnamed-chunk-12" class="exercise"><strong>Exercise 1.8  (Minimization problem - the Griewank function)  </strong></span><span class="math display">\[f(x_1 \cdots x_n) = 1 + \frac{1}{4000} \sum_{i=1}^n x^2_i - \prod_{i=1}^n cos(\frac{x_i}{\sqrt{i}})\]</span></p>
+<p><span class="math display">\[-512 \leq x_i \leq 512\]</span></p>
+<span class="math display">\[\text{minimum at }f(0, \cdots, 0) = 0\]</span>
+</div>
+
+
+<div class="exercise">
+<p><span id="exr:unnamed-chunk-13" class="exercise"><strong>Exercise 1.9  (Minimization problem - the Ridge function)  </strong></span><span class="math display">\[f(x_1 \cdots x_n) = \sum_{i=1}^n \left(\sum_{j=1}^i x_j\right)^2\]</span></p>
+<p><span class="math display">\[-64 \leq x_i \leq 64\]</span></p>
+<span class="math display">\[\text{minimum at }f(0, \cdots, 0) = 0\]</span>
+</div>
+
+
+<div class="exercise">
+<p><span id="exr:unnamed-chunk-14" class="exercise"><strong>Exercise 1.10  (Minimization problem - the Rosenbrock function)  </strong></span><span class="math display">\[f(x_1 \cdots x_n) = \sum_{i=1}^{n-1} (100(x_i^2 - x_{i+1})^2 + (1-x_i)^2)\]</span></p>
+<p><span class="math display">\[-2.048 \leq x_i \leq 2.048\]</span></p>
+<span class="math display">\[\text{minimum at }f(1, 1, \cdots, 1) = 0\]</span>
+</div>
+
+
+<div class="exercise">
+<p><span id="exr:unnamed-chunk-15" class="exercise"><strong>Exercise 1.11  (Minimization problem - the Whitley function)  </strong></span><span class="math display">\[f(x_1 \cdots x_n) = \sum_{i=1}^n \sum_{j=1}^n (\frac{(100(x_i^2-x_j)^2 + (1-x_j)^2)^2}{4000} -\cos(100(x_i^2-x_j)^2 + (1-x_j)^2)+1)\]</span></p>
+<p><span class="math display">\[-10.24 \leq x_i \leq 10.24\]</span></p>
+<p><span class="math display">\[\text{minimum at }f(1, 1, \cdots, 1) = 0\]</span></p>
+</div>
+
+
+<div class="exercise">
+<span id="exr:unnamed-chunk-16" class="exercise"><strong>Exercise 1.12  (Minimization problem - the Matyas function)  </strong></span><span class="math display">\[
+f(x,y)= .26 (x^2 + y^2) - .48 xy
+\]</span> <span class="math display">\[
+-10 \leq x,y \leq 10
+\]</span> <span class="math display">\[\text{minimum at }f(0, 0) = 0\]</span>
+</div>
+
+
+<div class="exercise">
+<p><span id="exr:unnamed-chunk-17" class="exercise"><strong>Exercise 1.13  (Minimization problem - the McCormick function)  </strong></span><span class="math display">\[
+f(x,y)= \sin(x+y)+(x-y)^2 - 1.5 x + 2.5 y + 1
+\]</span> <span class="math display">\[
+x\in[-1.5,4], y\in[-3.4]
+\]</span> <span class="math display">\[\text{minimum at }f(-.54719, -1.54719) = -1.9133\]</span></p>
+</div>
+
+
+<div class="exercise">
+<span id="exr:unnamed-chunk-18" class="exercise"><strong>Exercise 1.14  (Minimization problem - the Three-Hump Camel function)  </strong></span><span class="math display">\[
+f(x,y)= 2x^2 - 1.05 x^4 + x^6/6 + xy + y^2
+\]</span> <span class="math display">\[
+-5 \leq x,y \leq 5
+\]</span> <span class="math display">\[\text{minimum at }f(0,0) = 0\]</span> \end{enumerate}
+</div>
+
+
+<div class="exercise">
+<span id="exr:unnamed-chunk-19" class="exercise"><strong>Exercise 1.15  (Classes of functions)  </strong></span>
+</div>
+
+
+<div class="exercise">
+<span id="exr:unnamed-chunk-20" class="exercise"><strong>Exercise 1.16  (Classes of functions)  </strong></span>
+</div>
+
+
+<div class="exercise">
+<span id="exr:unnamed-chunk-21" class="exercise"><strong>Exercise 1.17  (Classes of functions)  </strong></span>
+</div>
+
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
