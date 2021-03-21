@@ -122,7 +122,7 @@ $$x_2(\gamma) = x_1 - \gamma \nabla f(x_1) = \begin{bmatrix}
 \end{bmatrix} = \begin{bmatrix}
 8\gamma\\
 1 - 22\gamma
-\end{bmatrix}.
+\end{bmatrix}$$.
 
 The function
 
@@ -130,7 +130,7 @@ $$g(\gamma) = f(8\gamma, 1 - 22\gamma)$$
 $$= 128\gamma^2 + 5 + 2420\gamma^2 - 220\gamma - 16\gamma + 352 \gamma^2 - 48\gamma + 12 - 264\gamma + 9$$
 $$= 2900\gamma^2 - 548\gamma + 26$$
   
-is quadratic. Its derivative is $5800x - 548$ and $f$ is minimized at $\gamma^* = \frac{548}{5800} = \frac{137}{1450}$. Pluggin this into $g(\gamma)$, we get $\frac{81}{725}$ - the minimum function value that can be achieved with a single step of gradient descent.
+is quadratic. Its derivative is $5800x - 548$ and $g$ is minimized at $\gamma^* = \frac{548}{5800} = \frac{137}{1450}$. Pluggin this into $g(\gamma)$, we get $\frac{81}{725}$ - the minimum function value that can be achieved with a single step of gradient descent.
 
 The global minimum of $f$ is 0 at $x^* = (1, -1)$. 
 

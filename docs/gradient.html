@@ -186,27 +186,20 @@ For example, if <span class="math inline">\(f,g\in \mathcal{L}( L,\mathbb{R},\ma
 10y - 2x + 12
 \end{bmatrix}.\]</span></p>
 <p>The value of the gradient at <span class="math inline">\(x_1 = (0, 1)\)</span> is <span class="math inline">\(\begin{bmatrix} -8\\ 22 \end{bmatrix}\)</span>, so</p>
-$$x_2() = x_1 - f(x_1) =
-<span class="math display">\[\begin{bmatrix}
+<p><span class="math display">\[x_2(\gamma) = x_1 - \gamma \nabla f(x_1) = \begin{bmatrix}
 0\\
 1
-\end{bmatrix}\]</span>
-<ul>
-<li>
-<span class="math display">\[\begin{bmatrix}
+\end{bmatrix} - \gamma \begin{bmatrix}
 -8\\
 22
-\end{bmatrix}\]</span>
-=
-<span class="math display">\[\begin{bmatrix}
+\end{bmatrix} = \begin{bmatrix}
 8\gamma\\
 1 - 22\gamma
-\end{bmatrix}\]</span>
-.</li>
-</ul>
+\end{bmatrix}\]</span>.</p>
 <p>The function</p>
 <p><span class="math display">\[g(\gamma) = f(8\gamma, 1 - 22\gamma)\]</span> <span class="math display">\[= 128\gamma^2 + 5 + 2420\gamma^2 - 220\gamma - 16\gamma + 352 \gamma^2 - 48\gamma + 12 - 264\gamma + 9\]</span> <span class="math display">\[= 2900\gamma^2 - 548\gamma + 26\]</span></p>
-<p>is quadratic. Its derivative is <span class="math inline">\(5800x - 548\)</span> and <span class="math inline">\(f\)</span> is minimized at <span class="math inline">\(\frac{548}{5800} = \frac{137}{1450}\)</span>. Pluggin this into <span class="math inline">\(g(\gamma)\)</span>, we get <span class="math inline">\(\frac{81}{725}.\)</span></p>
+<p>is quadratic. Its derivative is <span class="math inline">\(5800x - 548\)</span> and <span class="math inline">\(g\)</span> is minimized at <span class="math inline">\(\gamma^* = \frac{548}{5800} = \frac{137}{1450}\)</span>. Pluggin this into <span class="math inline">\(g(\gamma)\)</span>, we get <span class="math inline">\(\frac{81}{725}\)</span> - the minimum function value that can be achieved with a single step of gradient descent.</p>
+<p>The global minimum of <span class="math inline">\(f\)</span> is 0 at <span class="math inline">\(x^* = (1, -1)\)</span>.</p>
 </div>
 
 </div>
