@@ -1,0 +1,30 @@
+# Markov Chain Monte Carlo {#MCMC}
+
+```{r, echo = FALSE}
+togs   <- T
+tog_ex <- T
+```
+
+<style>
+.fold-btn { 
+  float: right; 
+  margin: 5px 5px 0 0;
+}
+.fold { 
+  border: 1px solid black;
+  min-height: 40px;
+}
+</style>
+
+<script type="text/javascript">
+$(document).ready(function() {
+  $folds = $(".fold");
+  $folds.wrapInner("<div class=\"fold-blck\">"); // wrap a div container around content
+  $folds.prepend("<button class=\"fold-btn\">Unfold Solution</button>");  // add a button
+  $(".fold-blck").toggle();  // fold all blocks
+  $(".fold-btn").on("click", function() {  // add onClick event
+    $(this).text($(this).text() === "Fold Solution" ? "Unfold Solution" : "Fold Solution");  // if the text equals "Fold", change it to "Unfold"or else to "Fold" 
+    $(this).next(".fold-blck").toggle("linear");  // "swing" is the default easing function. This can be further customized in its speed or the overall animation itself.
+  })
+});
+</script>

@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Mathematics 2 - exercises</title>
+  <title>Chapter 3 Markov Chain Monte Carlo | Mathematics 2 - exercises</title>
   <meta name="description" content="Course notes" />
   <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Mathematics 2 - exercises" />
+  <meta property="og:title" content="Chapter 3 Markov Chain Monte Carlo | Mathematics 2 - exercises" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://fri-datascience.github.io/course_ma2/" />
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Mathematics 2 - exercises" />
+  <meta name="twitter:title" content="Chapter 3 Markov Chain Monte Carlo | Mathematics 2 - exercises" />
   
   <meta name="twitter:description" content="Course notes" />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-
-<link rel="next" href="gradient.html"/>
+<link rel="prev" href="markov.html"/>
+<link rel="next" href="references.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -96,14 +96,30 @@
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">Mathematics 2 - exercises</h1>
-<p class="author"><em>Erik Štrumbelj and Žiga Virk</em></p>
-<p class="date"><em>2021-03-21</em></p>
-</div>
-<div id="preface" class="section level1 unnumbered">
-<h1>Preface</h1>
-<p>These are the exercises for the Mathematics 2 course of the Data Science Master's at University of Ljubljana, Faculty of Computer and Information Science.</p>
+<div id="MCMC" class="section level1">
+<h1><span class="header-section-number">Chapter 3</span> Markov Chain Monte Carlo</h1>
+<style>
+.fold-btn { 
+  float: right; 
+  margin: 5px 5px 0 0;
+}
+.fold { 
+  border: 1px solid black;
+  min-height: 40px;
+}
+</style>
+<script type="text/javascript">
+$(document).ready(function() {
+  $folds = $(".fold");
+  $folds.wrapInner("<div class=\"fold-blck\">"); // wrap a div container around content
+  $folds.prepend("<button class=\"fold-btn\">Unfold Solution</button>");  // add a button
+  $(".fold-blck").toggle();  // fold all blocks
+  $(".fold-btn").on("click", function() {  // add onClick event
+    $(this).text($(this).text() === "Fold Solution" ? "Unfold Solution" : "Fold Solution");  // if the text equals "Fold", change it to "Unfold"or else to "Fold" 
+    $(this).next(".fold-blck").toggle("linear");  // "swing" is the default easing function. This can be further customized in its speed or the overall animation itself.
+  })
+});
+</script>
 
 </div>
             </section>
@@ -111,8 +127,8 @@
           </div>
         </div>
       </div>
-
-<a href="gradient.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="markov.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

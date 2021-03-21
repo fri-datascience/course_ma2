@@ -32,7 +32,7 @@
   
   
 <link rel="prev" href="index.html"/>
-<link rel="next" href="references.html"/>
+<link rel="next" href="markov.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -74,6 +74,8 @@
 <li class="chapter" data-level="1.1" data-path="gradient.html"><a href="gradient.html#theoretical-problems"><i class="fa fa-check"></i><b>1.1</b> Theoretical problems</a></li>
 <li class="chapter" data-level="1.2" data-path="gradient.html"><a href="gradient.html#practical-problems"><i class="fa fa-check"></i><b>1.2</b> Practical problems</a></li>
 </ul></li>
+<li class="chapter" data-level="2" data-path="markov.html"><a href="markov.html"><i class="fa fa-check"></i><b>2</b> Markov Chains</a></li>
+<li class="chapter" data-level="3" data-path="MCMC.html"><a href="MCMC.html"><i class="fa fa-check"></i><b>3</b> Markov Chain Monte Carlo</a></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>      
@@ -153,8 +155,8 @@ For example, if <span class="math inline">\(f,g\in \mathcal{L}( L,\mathbb{R},\ma
 2y
 \end{bmatrix}\]</span></p>
 <p>and from</p>
-<p><span class="math display">\[||\nabla f|| = \sqrt{(2 + 2e^{2x})^2 + (2y)^2} \leq L \text{ on } D,\]</span></p>
-<p>where <span class="math inline">\(L\)</span> is some constant, it follows that <span class="math inline">\(f\)</span> is Lipshitz.</p>
+<p><span class="math display">\[||\nabla f|| = \sqrt{(2 + 2e^{2x})^2 + (2y)^2} \leq \sqrt{(2 + 2e^{6})^2 + 6^2} = L \text{ on } D\]</span></p>
+<p>it follows that <span class="math inline">\(f\)</span> is Lipshitz.</p>
 <p>Next, we compute the Hessian</p>
 <p><span class="math display">\[\nabla f = \begin{bmatrix}
 4e^{2x} &amp; 0\\
@@ -199,7 +201,9 @@ For example, if <span class="math inline">\(f,g\in \mathcal{L}( L,\mathbb{R},\ma
 <p>The function</p>
 <p><span class="math display">\[g(\gamma) = f(8\gamma, 1 - 22\gamma)\]</span> <span class="math display">\[= 128\gamma^2 + 5 + 2420\gamma^2 - 220\gamma - 16\gamma + 352 \gamma^2 - 48\gamma + 12 - 264\gamma + 9\]</span> <span class="math display">\[= 2900\gamma^2 - 548\gamma + 26\]</span></p>
 <p>is quadratic. Its derivative is <span class="math inline">\(5800x - 548\)</span> and <span class="math inline">\(g\)</span> is minimized at <span class="math inline">\(\gamma^* = \frac{548}{5800} = \frac{137}{1450}\)</span>. Pluggin this into <span class="math inline">\(g(\gamma)\)</span>, we get <span class="math inline">\(\frac{81}{725}\)</span> - the minimum function value that can be achieved with a single step of gradient descent.</p>
-<p>The global minimum of <span class="math inline">\(f\)</span> is 0 at <span class="math inline">\(x^* = (1, -1)\)</span>.</p>
+<p>The global minimum of <span class="math inline">\(f\)</span> is 0 at <span class="math inline">\(x^* = (1, -1)\)</span>. We get the closest to <span class="math inline">\(x^*\)</span> at</p>
+<p><span class="math display">\[\gamma^* = \arg\min_\gamma \sqrt{(8\gamma - 1)^2 + (1 - 22\gamma - (-1))^2}\]</span> <span class="math display">\[= \arg\min_\gamma (8\gamma - 1)^2 + (1 - 22\gamma - (-1))^2\]</span> <span class="math display">\[= \arg\min_\gamma 548\gamma^2 - 104\gamma + 5.\]</span></p>
+<p>The above quadratic is minimized at <span class="math inline">\(\gamma^* = \frac{13}{137}\)</span> and the minimum achievable distance is <span class="math inline">\(\frac{9}{137}\)</span>.</p>
 </div>
 
 </div>
@@ -224,51 +228,35 @@ For example, if <span class="math inline">\(f,g\in \mathcal{L}( L,\mathbb{R},\ma
 
 
 <div class="exercise">
-<p><span id="exr:unnamed-chunk-9" class="exercise"><strong>Exercise 1.6  (Minimization problem - an exponential function)  </strong></span><span class="math display">\[f(x_1 \cdots x_n) = \sum_{i=1}^n e^{ix_i}i + \alpha\]</span></p>
-<p><span class="math display">\[\alpha = -\sum_{i=1}^n e^{-5.12i}\]</span></p>
-<p><span class="math display">\[-5.12 \leq x_i \leq 5.12\]</span></p>
-<span class="math display">\[\text{minimum at }f(-5.12, \cdots, -5.12) = 0\]</span>
-</div>
-
-
-<div class="exercise">
-<p><span id="exr:unnamed-chunk-10" class="exercise"><strong>Exercise 1.7  (Minimization problem - an exponential function)  </strong></span><span class="math display">\[f(x_1 \cdots x_n) = \sum_{i=1}^n e^{ix_i}i + \alpha\]</span></p>
-<p><span class="math display">\[\alpha = -\sum_{i=1}^n e^{-5.12i}\]</span></p>
-<p><span class="math display">\[-5.12 \leq x_i \leq 5.12\]</span></p>
-<span class="math display">\[\text{minimum at }f(-5.12, \cdots, -5.12) = 0\]</span>
-</div>
-
-
-<div class="exercise">
-<p><span id="exr:unnamed-chunk-11" class="exercise"><strong>Exercise 1.8  (Minimization problem - the Griewank function)  </strong></span><span class="math display">\[f(x_1 \cdots x_n) = 1 + \frac{1}{4000} \sum_{i=1}^n x^2_i - \prod_{i=1}^n cos(\frac{x_i}{\sqrt{i}})\]</span></p>
+<p><span id="exr:unnamed-chunk-9" class="exercise"><strong>Exercise 1.6  (Minimization problem - the Griewank function)  </strong></span><span class="math display">\[f(x_1 \cdots x_n) = 1 + \frac{1}{4000} \sum_{i=1}^n x^2_i - \prod_{i=1}^n cos(\frac{x_i}{\sqrt{i}})\]</span></p>
 <p><span class="math display">\[-512 \leq x_i \leq 512\]</span></p>
 <span class="math display">\[\text{minimum at }f(0, \cdots, 0) = 0\]</span>
 </div>
 
 
 <div class="exercise">
-<p><span id="exr:unnamed-chunk-12" class="exercise"><strong>Exercise 1.9  (Minimization problem - the Ridge function)  </strong></span><span class="math display">\[f(x_1 \cdots x_n) = \sum_{i=1}^n \left(\sum_{j=1}^i x_j\right)^2\]</span></p>
+<p><span id="exr:unnamed-chunk-10" class="exercise"><strong>Exercise 1.7  (Minimization problem - the Ridge function)  </strong></span><span class="math display">\[f(x_1 \cdots x_n) = \sum_{i=1}^n \left(\sum_{j=1}^i x_j\right)^2\]</span></p>
 <p><span class="math display">\[-64 \leq x_i \leq 64\]</span></p>
 <span class="math display">\[\text{minimum at }f(0, \cdots, 0) = 0\]</span>
 </div>
 
 
 <div class="exercise">
-<p><span id="exr:unnamed-chunk-13" class="exercise"><strong>Exercise 1.10  (Minimization problem - the Rosenbrock function)  </strong></span><span class="math display">\[f(x_1 \cdots x_n) = \sum_{i=1}^{n-1} (100(x_i^2 - x_{i+1})^2 + (1-x_i)^2)\]</span></p>
+<p><span id="exr:unnamed-chunk-11" class="exercise"><strong>Exercise 1.8  (Minimization problem - the Rosenbrock function)  </strong></span><span class="math display">\[f(x_1 \cdots x_n) = \sum_{i=1}^{n-1} (100(x_i^2 - x_{i+1})^2 + (1-x_i)^2)\]</span></p>
 <p><span class="math display">\[-2.048 \leq x_i \leq 2.048\]</span></p>
 <span class="math display">\[\text{minimum at }f(1, 1, \cdots, 1) = 0\]</span>
 </div>
 
 
 <div class="exercise">
-<p><span id="exr:unnamed-chunk-14" class="exercise"><strong>Exercise 1.11  (Minimization problem - the Whitley function)  </strong></span><span class="math display">\[f(x_1 \cdots x_n) = \sum_{i=1}^n \sum_{j=1}^n (\frac{(100(x_i^2-x_j)^2 + (1-x_j)^2)^2}{4000} -\cos(100(x_i^2-x_j)^2 + (1-x_j)^2)+1)\]</span></p>
+<p><span id="exr:unnamed-chunk-12" class="exercise"><strong>Exercise 1.9  (Minimization problem - the Whitley function)  </strong></span><span class="math display">\[f(x_1 \cdots x_n) = \sum_{i=1}^n \sum_{j=1}^n (\frac{(100(x_i^2-x_j)^2 + (1-x_j)^2)^2}{4000} -\cos(100(x_i^2-x_j)^2 + (1-x_j)^2)+1)\]</span></p>
 <p><span class="math display">\[-10.24 \leq x_i \leq 10.24\]</span></p>
 <p><span class="math display">\[\text{minimum at }f(1, 1, \cdots, 1) = 0\]</span></p>
 </div>
 
 
 <div class="exercise">
-<span id="exr:unnamed-chunk-15" class="exercise"><strong>Exercise 1.12  (Minimization problem - the Matyas function)  </strong></span><span class="math display">\[
+<span id="exr:unnamed-chunk-13" class="exercise"><strong>Exercise 1.10  (Minimization problem - the Matyas function)  </strong></span><span class="math display">\[
 f(x,y)= .26 (x^2 + y^2) - .48 xy
 \]</span> <span class="math display">\[
 -10 \leq x,y \leq 10
@@ -277,7 +265,7 @@ f(x,y)= .26 (x^2 + y^2) - .48 xy
 
 
 <div class="exercise">
-<p><span id="exr:unnamed-chunk-16" class="exercise"><strong>Exercise 1.13  (Minimization problem - the McCormick function)  </strong></span><span class="math display">\[
+<p><span id="exr:unnamed-chunk-14" class="exercise"><strong>Exercise 1.11  (Minimization problem - the McCormick function)  </strong></span><span class="math display">\[
 f(x,y)= \sin(x+y)+(x-y)^2 - 1.5 x + 2.5 y + 1
 \]</span> <span class="math display">\[
 x\in[-1.5,4], y\in[-3.4]
@@ -286,7 +274,7 @@ x\in[-1.5,4], y\in[-3.4]
 
 
 <div class="exercise">
-<span id="exr:unnamed-chunk-17" class="exercise"><strong>Exercise 1.14  (Minimization problem - the Three-Hump Camel function)  </strong></span><span class="math display">\[
+<span id="exr:unnamed-chunk-15" class="exercise"><strong>Exercise 1.12  (Minimization problem - the Three-Hump Camel function)  </strong></span><span class="math display">\[
 f(x,y)= 2x^2 - 1.05 x^4 + x^6/6 + xy + y^2
 \]</span> <span class="math display">\[
 -5 \leq x,y \leq 5
@@ -302,7 +290,7 @@ f(x,y)= 2x^2 - 1.05 x^4 + x^6/6 + xy + y^2
         </div>
       </div>
 <a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="markov.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
