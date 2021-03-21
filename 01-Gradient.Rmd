@@ -67,7 +67,7 @@ $$\nabla f = \begin{bmatrix}
   
 and from
 
-$$||\nabla f|| = \sqrt{(2 + 2e^{2x})^2 + (2y)^2} \leq L on D,$$
+$$||\nabla f|| = \sqrt{(2 + 2e^{2x})^2 + (2y)^2} \leq L \text{ on } D,$$
   
 where $L$ is some constant, it follows that $f$ is Lipshitz.
 
