@@ -121,6 +121,50 @@ $(document).ready(function() {
 });
 </script>
 
+<div class="exercise">
+<p><span id="exr:unnamed-chunk-19" class="exercise"><strong>Exercise 3.1  (Monte Carlo Integration)  </strong></span>Let <span class="math inline">\(X \sim N(0, 1)\)</span> and <span class="math inline">\(f(x) = 10\exp(-5(x - 3)^4)\)</span>. We are interested in computing the expectation of <span class="math inline">\(f\)</span> with respect to <span class="math inline">\(X\)</span>.</p>
+<ol style="list-style-type: lower-alpha">
+<li>Approximate the integral using a quadrature based method (you may use a third-party library).</li>
+<li>Approximate the integral using Monte Carlo (100 samples).</li>
+<li>Repeat (b) 1000 times, compute a 90% CI using the normal approximation, and observe whether or not the CI contains the 'true' value (use (1)). Does it contain the true value 90% of the time? Discuss.</li>
+<li>Approximate the integral using importance sampling (100 samples) with a sensible choice of surrogate distribution. Compare the variance of your importance sampling estimator with the variance of the Monte Carlo estimator from (2) and discuss.</li>
+<li>Approximate the integral using Monte Carlo (100 samples) but instead of using the build-in generator for the standard normal distribution, implement rejection sampling using a logistic distribution-based envelope. Compare the variance of this estimator with the variance of estimator from (2) and discuss.</li>
+<li>Approximate the integral using Monte Carlo (100 samples) but instead of using the build-in generator for the standard normal distribution, implement Metropolis-Hastings with a <span class="math inline">\(U(x_i - \delta, x_i + \delta), \delta &gt; 0\)</span> proposal distribution. How do the variance of the estimator and the rejection rate change with <span class="math inline">\(\delta\)</span>? Find the optimal <span class="math inline">\(\delta\)</span> and compare the optimal variance with (2). What is the effective sample size (ESS)? You may use a library for MCMC variance estimation.
+</div>
+</li>
+</ol>
+
+<div class="exercise">
+<p><span id="exr:unnamed-chunk-20" class="exercise"><strong>Exercise 3.2  (Bayesian inference for logistic regression )  </strong></span>The goal of this problem is to implement a Metropolis-Hastings sampler for Bayesian logistic regression.</p>
+<ol style="list-style-type: lower-alpha">
+<li>Generate a toy dataset with 100 observations, each with 5 real-valued predictors <span class="math inline">\(x_1,...,x_5\)</span> and a binary dependent variable <span class="math inline">\(Y\)</span>. All predictors are standard normal and <span class="math inline">\(Y_i \sim Bernoulli(\frac{1}{1 + e^{-\mu_i}}),\)</span> where <span class="math inline">\(\mu_i = 3x_1 - 2x_2 + \frac{1}{10}x_3 + 1\)</span>. That is, we have a classification problem where only the first three predictors are relevant.</li>
+<li>Implement the logistic regression likelihood with an arbitrary number of coefficients (same as above, but <span class="math inline">\(\mu_i = \beta^Tx_i\)</span>, where <span class="math inline">\(x_i\)</span> is now a vector) and combine it with a weakly-informative standard normal prior <span class="math inline">\(\beta_i \sim N(0, 100)\)</span> to get a function that is proportional to the posterior distribution of the logistic regression model.</li>
+<li>Use your own implementation of Metropolis-Hastings with a standard normal proposal to infer the parameters on the toy dataset. Generate 4 independent chains from the posterior with 10000 samples each. Inspect traceplots, rejection rate and lag-k covariances and compute effective sample size (ESS) for each parameter. You may use a library for MCMC variance estimation. Discuss if there is some reason for concern that the Markov chain is problematic.</li>
+<li>Do your best to improve the efficiency of the sampler by changing the covariance matrix of the proposal distribution. Report the rejection rate and ESS for the most efficient M-H sampler you get. Compare with those obtained in (3) and discuss.</li>
+<li>Estimate posterior means of <span class="math inline">\(\beta_i\)</span> using the most efficient sampler. Compare with the ground truth. Estimate the posterior probability <span class="math inline">\(P(|\beta_3| &gt; \frac{1}{10}|\text{data})\)</span>.
+</div>
+</li>
+</ol>
+
+<div class="exercise">
+<p><span id="exr:unnamed-chunk-21" class="exercise"><strong>Exercise 3.3  (Tuning the M-H sampler for the Banana function)  </strong></span>Plot a contour plot of this function (it should look like a banana):</p>
+<p><code>fn &lt;- function(x) {   exp(-(x[1]^2)/200- 0.5 * (x[2]+ 0.05 * x[1]^2 - 100*0.05)^2 ) }</code></p>
+<p>The goal is to sample from the distribution whose density is proportional to the above function.</p>
+<p>Implement a Metropolis-Hastings sampler. Below are three different proposal distributions. For each proposal distributin separately do the following: Draw 1000 samples from 3 different starting points (= 3 different chains). For each chain:</p>
+<ul>
+<li>plot the path of first 100 steps (over the contour plot; jitter rejected proposals so that they are visible),</li>
+<li>plot the traceplot and compute the ESS (for each of the two variables; you may use a library for MCMC variance estimation),</li>
+<li>and compute the rejection rate.</li>
+</ul>
+<p>Proposal distributions:</p>
+<ol style="list-style-type: lower-alpha">
+<li>Sample uniformly from a square with side of length 1 and centered on the current state.</li>
+<li>Sample uniformly from a square with side of length 20 and centered on the current state.</li>
+<li>Suggest a proposal distribution that will be more efficient. Why is it difficult to come up with an efficient M-H proposal distribution for this density?</li>
+</ol>
+</div>
+
+
 </div>
             </section>
 

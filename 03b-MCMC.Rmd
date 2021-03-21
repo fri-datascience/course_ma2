@@ -28,3 +28,52 @@ $(document).ready(function() {
   })
 });
 </script>
+
+```{exercise, name = "Monte Carlo Integration"}
+Let $X \sim N(0, 1)$ and $f(x) = 10\exp(-5(x - 3)^4)$. We are interested in computing the expectation of $f$ with respect to $X$.
+
+a. Approximate the integral using a quadrature based method (you may use a third-party library).
+b. Approximate the integral using Monte Carlo (100 samples).
+c. Repeat (b) 1000 times, compute a 90\% CI using the normal approximation, and observe whether or not the CI contains the 'true' value (use (1)). Does it contain the true value 90\% of the time? Discuss.
+d. Approximate the integral using importance sampling (100 samples) with a sensible choice of surrogate distribution. Compare the variance of your importance sampling estimator with the variance of the Monte Carlo estimator from (2) and discuss. 
+e. Approximate the integral using Monte Carlo (100 samples) but instead of using the build-in generator for the standard normal distribution, implement rejection sampling using a logistic distribution-based envelope. Compare the variance of this estimator with the variance of estimator from (2) and discuss. 
+f. Approximate the integral using Monte Carlo (100 samples) but instead of using the build-in generator for the standard normal distribution, implement Metropolis-Hastings with a $U(x_i - \delta, x_i + \delta), \delta > 0$ proposal distribution. How do the variance of the estimator and the rejection rate change with $\delta$? Find the optimal $\delta$ and compare the optimal variance with (2). What is the effective sample size (ESS)? You may use a library for MCMC variance estimation.
+```
+
+
+```{exercise, name = "Bayesian inference for logistic regression "}
+The goal of this problem is to implement a Metropolis-Hastings sampler for Bayesian logistic regression.
+
+a. Generate a toy dataset with 100 observations, each with 5 real-valued predictors $x_1,...,x_5$ and a binary dependent variable $Y$. All predictors are standard normal and $Y_i \sim Bernoulli(\frac{1}{1 + e^{-\mu_i}}),$ where $\mu_i = 3x_1 - 2x_2 + \frac{1}{10}x_3 + 1$. That is, we have a classification problem where only the first three predictors are relevant.
+b. Implement the logistic regression likelihood with an arbitrary number of coefficients (same as above, but $\mu_i = \beta^Tx_i$, where $x_i$ is now a vector) and combine it with a weakly-informative standard normal prior $\beta_i \sim N(0, 100)$ to get a function that is proportional to the posterior distribution of the logistic regression model.
+c. Use your own implementation of Metropolis-Hastings with a standard normal proposal to infer the parameters on the toy dataset. Generate 4 independent chains from the posterior with 10000 samples each. Inspect traceplots, rejection rate and lag-k covariances and compute effective sample size (ESS) for each parameter. You may use a library for MCMC variance estimation. Discuss if there is some reason for concern that the Markov chain is problematic.
+d. Do your best to improve the efficiency of the sampler by changing the covariance matrix of the proposal distribution. Report the rejection rate and ESS for the most efficient M-H sampler you get. Compare with those obtained in (3) and discuss.
+e. Estimate posterior means of $\beta_i$ using the most efficient sampler. Compare with the ground truth. Estimate the posterior probability $P(|\beta_3| > \frac{1}{10}|\text{data})$.
+```
+
+
+
+```{exercise, name = "Tuning the M-H sampler for the Banana function"}
+Plot a contour plot of this function (it should look like a banana):
+
+`
+fn <- function(x) {
+  exp(-(x[1]^2)/200- 0.5 * (x[2]+ 0.05 * x[1]^2 - 100*0.05)^2 )
+}
+`
+
+The goal is to sample from the distribution whose density is proportional to the above function.
+ 
+Implement a Metropolis-Hastings sampler. Below are three different proposal distributions. For each proposal distributin separately do the following: Draw 1000 samples from 3 different starting points (= 3 different chains). For each chain:
+
+* plot the path of first 100 steps (over the contour plot; jitter rejected proposals so that they are visible),
+* plot the traceplot and compute the ESS (for each of the two variables; you may use a library for MCMC variance estimation),
+* and compute the rejection rate. 
+
+Proposal distributions:
+ 
+a. Sample uniformly from a square with side of length 1 and centered on the current state.
+b. Sample uniformly from a square with side of length 20 and centered on the current state.
+c. Suggest a proposal distribution that will be more efficient. Why is it difficult to come up with an efficient M-H proposal distribution for this density?
+
+```

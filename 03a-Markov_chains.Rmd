@@ -28,3 +28,40 @@ $(document).ready(function() {
   })
 });
 </script>
+
+
+```{exercise, name = "Properties of Markov Chains"}
+For each of the Markov chains defined below do the following:
+
+* Find all communicating classes and show whether or not the chain is irreducible,
+* For each state determine its period and whether it is transient, positive recurrent or null recurrent.
+* Find all stationary distributions and show that there are no other stationary distributions.
+
+a. $$K = \begin{bmatrix}
+0 & \frac{4}{5} & 0 & \frac{1}{5} & 0 \\[0.1em]
+\frac{1}{4} & 0 & \frac{1}{2} & \frac{1}{4} & 0 \\[0.1em]
+0 & \frac{1}{2} & 0 & \frac{1}{10} & \frac{2}{5} \\[0.1em]
+0 & 0 & 0 & 1 & 0 \\[0.1em]
+\frac{1}{3} & 0 & \frac{1}{3} & \frac{1}{3} & 0
+\end{bmatrix}.$$
+  
+  
+b. $$K = \begin{bmatrix}
+\frac{1}{10} & \frac{2}{10} & \frac{3}{10} & \frac{4}{10} \\[0.1em]
+0 & \frac{5}{10} & \frac{2}{10} & \frac{3}{10} \\[0.1em]
+0 & 0 & \frac{3}{10} & \frac{7}{10} \\[0.1em]
+0 & 0 & \frac{1}{10} & \frac{9}{10} 
+\end{bmatrix}.$$
+
+c. $$K = \begin{bmatrix}
+1 & 0 & 0 & 0 \\[0.1em]
+0 & \frac{1}{2} & \frac{1}{2} & 0 \\[0.1em]
+0 & \frac{1}{2} & \frac{1}{2} & 0 \\[0.1em]
+\frac{1}{2} & 0 & 0 & \frac{1}{2} 
+\end{bmatrix}.$$
+  
+
+d. $S = \mathbb{Z}$ (integers). If we are in state $z$, we have $\frac{1}{2}$ probability to move to $z - 1$ and $\frac{1}{2}$ probability to move to $z + 1$
+
+e. $S = \mathbb{Z}$. If we are in state $z > 0$, we have $\frac{4}{5}$ probability to move to $z - 1$ and $\frac{1}{5}$ probability to move to $z + 1$. If we are in state $z < 0$, we have $\frac{4}{5}$ probability to move to $z + 1$ and $\frac{1}{5}$ probability to move to $z - 1$. If we are in $z = 0$, we have equal probability to move to $+1$ or $-1$.
+```

@@ -121,6 +121,39 @@ $(document).ready(function() {
 });
 </script>
 
+<div class="exercise">
+<p><span id="exr:unnamed-chunk-17" class="exercise"><strong>Exercise 2.1  (Properties of Markov Chains)  </strong></span>For each of the Markov chains defined below do the following:</p>
+<ul>
+<li>Find all communicating classes and show whether or not the chain is irreducible,</li>
+<li>For each state determine its period and whether it is transient, positive recurrent or null recurrent.</li>
+<li>Find all stationary distributions and show that there are no other stationary distributions.</li>
+</ul>
+<ol style="list-style-type: lower-alpha">
+<li><p><span class="math display">\[K = \begin{bmatrix}
+0 &amp; \frac{4}{5} &amp; 0 &amp; \frac{1}{5} &amp; 0 \\[0.1em]
+\frac{1}{4} &amp; 0 &amp; \frac{1}{2} &amp; \frac{1}{4} &amp; 0 \\[0.1em]
+0 &amp; \frac{1}{2} &amp; 0 &amp; \frac{1}{10} &amp; \frac{2}{5} \\[0.1em]
+0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 \\[0.1em]
+\frac{1}{3} &amp; 0 &amp; \frac{1}{3} &amp; \frac{1}{3} &amp; 0
+\end{bmatrix}.\]</span></p></li>
+<li><p><span class="math display">\[K = \begin{bmatrix}
+\frac{1}{10} &amp; \frac{2}{10} &amp; \frac{3}{10} &amp; \frac{4}{10} \\[0.1em]
+0 &amp; \frac{5}{10} &amp; \frac{2}{10} &amp; \frac{3}{10} \\[0.1em]
+0 &amp; 0 &amp; \frac{3}{10} &amp; \frac{7}{10} \\[0.1em]
+0 &amp; 0 &amp; \frac{1}{10} &amp; \frac{9}{10} 
+\end{bmatrix}.\]</span></p></li>
+<li><p><span class="math display">\[K = \begin{bmatrix}
+1 &amp; 0 &amp; 0 &amp; 0 \\[0.1em]
+0 &amp; \frac{1}{2} &amp; \frac{1}{2} &amp; 0 \\[0.1em]
+0 &amp; \frac{1}{2} &amp; \frac{1}{2} &amp; 0 \\[0.1em]
+\frac{1}{2} &amp; 0 &amp; 0 &amp; \frac{1}{2} 
+\end{bmatrix}.\]</span></p></li>
+<li><p><span class="math inline">\(S = \mathbb{Z}\)</span> (integers). If we are in state <span class="math inline">\(z\)</span>, we have <span class="math inline">\(\frac{1}{2}\)</span> probability to move to <span class="math inline">\(z - 1\)</span> and <span class="math inline">\(\frac{1}{2}\)</span> probability to move to <span class="math inline">\(z + 1\)</span></p></li>
+<li><span class="math inline">\(S = \mathbb{Z}\)</span>. If we are in state <span class="math inline">\(z &gt; 0\)</span>, we have <span class="math inline">\(\frac{4}{5}\)</span> probability to move to <span class="math inline">\(z - 1\)</span> and <span class="math inline">\(\frac{1}{5}\)</span> probability to move to <span class="math inline">\(z + 1\)</span>. If we are in state <span class="math inline">\(z &lt; 0\)</span>, we have <span class="math inline">\(\frac{4}{5}\)</span> probability to move to <span class="math inline">\(z + 1\)</span> and <span class="math inline">\(\frac{1}{5}\)</span> probability to move to <span class="math inline">\(z - 1\)</span>. If we are in <span class="math inline">\(z = 0\)</span>, we have equal probability to move to <span class="math inline">\(+1\)</span> or <span class="math inline">\(-1\)</span>.
+</div>
+</li>
+</ol>
+
 </div>
             </section>
 
