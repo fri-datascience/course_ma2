@@ -34,10 +34,10 @@ Let $X \sim N(0, 1)$ and $f(x) = 10\exp(-5(x - 3)^4)$. We are interested in comp
 
 a. Approximate the integral using a quadrature based method (you may use a third-party library).
 b. Approximate the integral using Monte Carlo (100 samples).
-c. Repeat (b) 1000 times, compute a 90\% CI using the normal approximation, and observe whether or not the CI contains the 'true' value (use (1)). Does it contain the true value 90\% of the time? Discuss.
-d. Approximate the integral using importance sampling (100 samples) with a sensible choice of surrogate distribution. Compare the variance of your importance sampling estimator with the variance of the Monte Carlo estimator from (2) and discuss. 
-e. Approximate the integral using Monte Carlo (100 samples) but instead of using the build-in generator for the standard normal distribution, implement rejection sampling using a logistic distribution-based envelope. Compare the variance of this estimator with the variance of estimator from (2) and discuss. 
-f. Approximate the integral using Monte Carlo (100 samples) but instead of using the build-in generator for the standard normal distribution, implement Metropolis-Hastings with a $U(x_i - \delta, x_i + \delta), \delta > 0$ proposal distribution. How do the variance of the estimator and the rejection rate change with $\delta$? Find the optimal $\delta$ and compare the optimal variance with (2). What is the effective sample size (ESS)? You may use a library for MCMC variance estimation.
+c. Repeat (b) 1000 times, compute a 90\% CI using the normal approximation, and observe whether or not the CI contains the 'true' value (use (a)). Does it contain the true value 90\% of the time? Discuss.
+d. Approximate the integral using importance sampling (100 samples) with a sensible choice of surrogate distribution. Compare the variance of your importance sampling estimator with the variance of the Monte Carlo estimator from (b) and discuss. 
+e. Approximate the integral using Monte Carlo (100 samples) but instead of using the build-in generator for the standard normal distribution, implement rejection sampling using a logistic distribution-based envelope. Compare the variance of this estimator with the variance of estimator from (b) and discuss. 
+f. Approximate the integral using Monte Carlo (100 samples) but instead of using the build-in generator for the standard normal distribution, implement Metropolis-Hastings with a $U(x_i - \delta, x_i + \delta), \delta > 0$ proposal distribution. How do the variance of the estimator and the rejection rate change with $\delta$? Find the optimal $\delta$ and compare the optimal variance with (b). What is the effective sample size (ESS)? You may use a library for MCMC variance estimation.
 ```
 
 
