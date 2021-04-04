@@ -1,7 +1,8 @@
 book_filename: "bookdown-ma2"
 chapter_name: "Chapter "
 output_dir: docs
-rmd_files: ["index.Rmd", "01-Gradient.Rmd", "03a-Markov_chains.Rmd", "03b-MCMC.Rmd","References.Rmd"]
+rmd_files: ["index.Rmd", "01-Gradient.Rmd", "02-NA.Rmd", "03a-Monte_Carlo.Rmd", "03b-Markov_chains.Rmd", "03c-MCMC.Rmd","References.Rmd"]
 new_session: no
+
 
 

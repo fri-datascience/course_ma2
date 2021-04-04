@@ -1,0 +1,188 @@
+# NA {#NA}
+
+## Theoretical problems {#th02}
+
+```{exercise, name = "Bounding the unbounded"}
+ Observe that maximizing the sum of coordinates in the positive quadrant of $\mathbb{R}^2$ is an unbounded linear program. However, minimizing the sum of coordinates in the same quadrant is a linear problem that has an optimal solution. 
+
+Both problems have the same unbounded set of feasible solutions. There is nothing we can do for the first problem. For the problems of the second type, however, we would like to a-priori bound the coordinates so that (i) we preserve the feasibility of the problem and (ii) we do not alter the optimum. This can be done:
+  
+```{proposition}  
+Observe the linear program
+\begin{align*}
+  \min &\;c^T x \\ 
+       &A x = b \tag{LP}\\ 
+       &x \ge 0,
+\end{align*}
+where $A$ is an $m \times n$ matrix, $c,x$ are $n$-dimensional, and $b$ is an $m$-dimensional vector. Assume also that the coefficients so $A$, $b$, $c$ are integers and are (absolutely) bounded by $U$. Let $M=(m U)^m$.
+
+If *LP* is feasible, then there exists a feasible solution with all coordinates bounded by $M$. Also, if *LP* has an optimal solution, then there exists an optimal solution.
+```
+
+Our goal is to prove this proposition and we will do so in several steps:
+
+a. Observe first that we have equality constraints in *(LP)*. We know that inequality constraints can be transformed to equalities using slack variables, so *(LP)* is as general as it gets.
+
+b. Estimate the determinant of a square matrix in terms of its coefficients and its dimension. Do not overcomplicate - the first bound that you find will probably suffice. 
+
+c. Study Cramer's rule and the conditions that allow its application.
+
+d. Which linear systems of equalities have unique solutions? Is there always a square matrix involved?
+
+e. Look for a feasible solution with as many 0 coordinates as possible. More precisely, let $x^\circ$ be a feasible solution whose *support* $S$ (the support of a vector is the set of nonzero indices/coordinates) is *containment-wise* minimal (we compare supports by the subset relation). Show that $x^\circ$ is unique. Assuming there is an alternative ${x^\circ}'$ this can be established by observing the line through $x^\circ$ and ${x^\circ}'$ towards the boundary of the feasbility region.
+
+f. Repeat the same argument with an optimal solution $x^*$  (assuming that one exists), whose support is *containment-wise* minimal. It should be unique as well.
+
+g. Finally, focus on nonzero coordinates of $x^\circ$ and $x^*$ and rewrite the constraints.
+
+h. **(bonus)** Assume that $M$ was just slightly larger so that it is a strict upper bound on the coordinates of some optimal solution --- maybe already the above defined $M$ is sufficiently large. Is the following reasoning valid: (i) add these extra $M$-bounds to the description of the problem, (ii) as the feasible set is now bounded the problem has an optimal solution (even if the original one was unbounded), but (iii) if some coordinate in the optimal solution has value exactly $M$, then we know that the original problem was unbounded. 
+
+i. **(bonus)** Is *(d)* justified? Couldn't we manage with a solution that has the maximal *number* of zeros? Do we really need to compare supports by inclusion? Is a feasible solution with smallest number of nonzero coordinates unique or not?
+```
+
+
+```{exercise, name = "Analytic center"}
+Let 
+\begin{equation}
+A x \le b
+\label{sys}
+\end{equation}
+be a system of $n$ linear inequalities, and let $\Phi=\{x; Ax \le b\}$ be the set of its *feasible solutions*. We denote $s(x)= b-Ax$. Let $I \subseteq \{1,\ldots,n\}$ be the set of coordinates/indices, for which there exists $x \in \Phi$, so that $(Ax)_i < b_i$ or equivalently $s(x)_i >0$. Note that $x_i$ is the $i$-th coordinate of $x \in \mathbb{R}^n$.
+
+The vector $x \in \Phi$ which maximizes 
+
+$$\prod_{i \in I} s(x)_i$$
+is called the *analytic center* of a system of linear inequalitie. 
+
+a. Show that the analytic center vector is unique.
+b. Show that there exists $x \in \Phi$ so that for all $i\in I$ we have $s(x)_i > 0$.
+c. Show that the analytic center optimization problem is equivalent to a strictly convex optimization problem.
+d. Find the analytic center for the following system of linear inequalities:
+  \begin{align*}
+  2 v_1 + 2 v_2 \le&\; 480 \\
+  3 v_1 + 1 v_2 \le&\; 600 \\
+  v_1 \ge&\; 0 \\
+  v_2 \ge&\; 0 \\
+  \end{align*}
+e. Further constrain *(d)* with $2 v_1 + 2 v_2 \le 600$. This additional constraint does not change the set of feasible solutions, does it change the analytic center?   
+f. Let $a$ be a positive real. Find the analytic centre of 
+\begin{eqnarray*}
+-x_1 &\le 0 \\
+-x_2 &\le 0 \\
+a x_1 + x_2 &\le 1 .
+\end{eqnarray*}
+g. Find the analytic center of this system of linear inequalities:
+\begin{eqnarray*}
+-x_1 &\le 0 \\
+-x_2 &\le 0 \\
+x_1 + x_2 &\le 1\\ 
+x_1 + x_2 &\le 1.
+\end{eqnarray*}
+g. **(bonus)** When discussing the interior point method for solving LP we defined the *central path*. Is the initial solution (an all 1s vector) incidentally also the analytic center?
+```
+
+
+```{exercise, name = "Vertices of matching polytope"}
+Let $\Psi$ be a convex set in $\mathbb{R}^d$. We call $x \in \Psi$ a *vertex* (also an \*extremal point*) of $\Psi$ if $x$ cannot be expressed as a *proper convex combination* of $x_1,x_2 \in \Psi\setminus\{x\}$.  A proper convex combination of $x_1$ and $x_2$ is an expression $\lambda x_1 + (1-\lambda) x_2$ where $\lambda \in (0,1)$. Equivalently, $x$ is a vertex of $\Psi$ if $\Psi\setminus \{x\}$ is convex.
+
+Let $G=(V,E)$ be a simple (undirected, finite) graph. A *matching* in $G$ is a set of edges $M$ which have no vertices in common. The *maximal matching* problem is an optimization problem looking for a matching of maximal cardinality.
+
+The maximal matching problem can be described as a constraint satisfaction problem in the following way:
+
+\begin{align*}
+  \max &\;e^T x \\ 
+    &\text{where for all $v \in V$ we have } \sum_{i \in E(v)} x_i \le 1, \text{ and}  \tag{MM} \\ 
+    &x \in \{0,1\}^E.
+\end{align*}
+
+In the above $e$ stands for the all 1s vector and $E(v)$ is the set of edges incident with a vertex $v$.
+
+The maximal matching problem can be linearly relaxed to
+
+\begin{align*}
+  \max &\;e^T x \\ 
+    &\text{where for all $v \in V$ we have } \sum_{i \in E(v)} x_i \le 1, \text{ and} \tag{MM-LR} \\ 
+    &x \in [0,1]^E,
+\end{align*}
+
+allowing nonintegral coordinates in $x$. The feasible set in (MM-LR) is called a *matching polytope*.
+
+a. Show that matchings are extremal points of the matching polytope.
+b. Show that there may exist extremal points of the matching polytope which are not matchings (focus on nonbipartite graphs).
+c. **(bonus)** Many edge-disjoint $s-t$ paths problem takes a graph $G$ and its pair of vertices $s,t$ as input. The solution is a maximal (in terms of cardinality) collection of *edge-disjoint* $s-t$ paths in $G$. What is a linear relaxation to this problem? Can it be further generalized by introducing weights on edges?
+```
+
+## Practical problems {#pr02}
+
+```{exercise, name = "The Nelder-Mead method"}
+Implement the Nelder-Mead optimization method in three dimensions and compare its performance with gradient descent, AdaGrad, Newton's method, and BFGS on
+
+a. $f(x,y,z) = (x-z)^2 + (2y+z)^2 + (4x-2y+z)^2 + x + y$ and
+b. $f(x,y,z) = (x-1)^2+(y-1)^2+100(y-x^2)^2+100(z-y^2)^2.$
+
+The comparison should be quantitative: measure and compare the quality of the solution over time. Explore the effect of different starting values.
+
+c. **(bonus)** How does the performance of gradient-based methods change if you derive and use analytical instead of numerical gradients.
+```
+
+
+```{exercise, name = "Black-box optimization"}
+You are given three personalized functions
+
+$$f_{\text{ID},i}: \mathbb{R}^3 \rightarrow \mathbb{R},$$
+
+where $i \in \{1,2,3\}$ and *ID* is your Student ID number (assumed to be a positive integer).
+
+The archive XX contains Windows, Linux, and Mac OS command line executables that allow you to evaluate these functions. The command line call contains 5 parameters (*ID*, $i$, $x$, $y$, $z$) and returns the function value $f_{\text{ID},i}(x, y, z)$. These problems are in theory unconstrained, but you are guaranteed that none of the calls results in an overflow if real parameters lie in $[-10,10]$.
+
+Example call:
+
+> _mac 63020161 1 3.17 0.71 -1.55
+
+a. Using the Nelder-Mead method find the minumum of $f_{\text{ID},1}$, $f_{\text{ID},2}$, and $f_{\text{ID},3}$, where *ID* is your Student ID.
+b. How would one use a gradient-descent based method in such a case. Which one is best suitable. Can you beat Nelder-Mead?
+```
+
+```{exercise, name = "A Local Search study"}
+The *minimum spanning tree* (MST) problem is a well known optimization problem formally defined as
+
+$$\\[0.2in]$$
+
+| **INPUT:** graph $G$ with edge weights $w: E(G) \rightarrow \mathbb{R}^+$; 
+| **OUTPUT:** (weight of) spanning tree $T$, such that $\sum_{e \in E(T)} w(e)$ is the smallest possible; 
+
+$$\\[0.2in]$$
+
+a. Show that if $w$ is injective, then the miminum spanning tree of a graph is *uniquely* defined. Hint: Assuming that your preferred MST algorithm correctly computes a spanning tree, show that there is no ambiguity which edges to use and which edges are not needed for the spanning tree construction.
+
+$$\\[0.2in]$$
+
+Local search A local search approach to computing the  of a graph could be described as follows:
+
+| **INPUT:** weighted graph $G$, initial spanning tree $T$;  
+| **OUTPUT:** spanning tree $T'$;  
+| 
+| 1: $T' = T$
+| 2: **WHILE** terminating condition isn't met:  
+| 3:   choose $e_{out} \in E(T')$;
+| 4:   choose $e_{in} \in E(G) \setminus E(T')$;
+| 5:   **IF** $T'-e_{out} + e_{in}$ is better than $T'$ **THEN** $T'= T'-e_{out}+e_{in}$
+| 6: **RETURN** $T'$
+
+Let us focus on lines 2 and 3. The choice of the outgoing edge $e_{out}$ can be made in several ways. We can take a random edge from $E(T')$ or we can choose a particularly bad edge --- an edge of $E(T')$ having maximal weight. Similarly the incoming edge $e_{in}$ can either be chosen at random or as the appropriate edge with smallest possible weight. Clearly $e_{in}$ should have endvertices in different components of $T'-e_{out}$, otherwise $T'-e_{out}+e_{in}$ is not a tree. This makes four different next-step strategies.
+
+Let $G_{20}$ be a $20 \times 20$ --- the vertex set consists of integral points in the plane with coordinates between $1$ and $20$, vertices at distance $1$ being adjacent. Let $T_{20}$ be its arbitrary, but fixed spanning tree. For example, $T_{20}$ can be the union of all horizontal paths together with the leftmost vertical one. A routine computation shows that $G_{20}$ contains exactly $760$ edges and $T_{20}$, no matter which one you choose, contains $399$ edges.
+
+b. Choose a random injective edge-weights function $w:E(G) \rightarrow \{1,\ldots,760\}$ for $G_{20}$ and compute the minimum spanning tree $T_{mst}$ with respect to $w$ --- use a library call/built in routine in your preferred programming environment. Note also its weight.
+
+c. Starting with initial spanning tree $T_{20}$, try all four described local search approaches. Does a particular approach converge to $T_{mst}$? If so, how fast? How many edge-swaps have you preformed until you reach $T_{mst}$?
+
+d. Repeat *(c)* above for several alternative choices of such edge weights.
+
+e. **(bonus)** Can you make efficient random choices in large scale applications? Choosing a random element of a linear array seems easy, but do we really have such arrays at our disposal?
+
+f. **(bonus)** We have focused on four next-step strategies. Can you think of a sensible qualitatively different alternative strategy?
+
+g. **(bonus)** A *Minimal bottleneck spanning tree (MBST)* of a graph $G$ is a spanning tree in which the heaviest edge (bottleneck) is as light as possible. Is there an easy way to compute a MBST of a graph? Why? How? 
+```
+

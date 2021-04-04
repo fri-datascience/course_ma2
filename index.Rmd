@@ -1,6 +1,6 @@
 --- 
 title: "Mathematics 2 - exercises"
-author: "Erik Štrumbelj and Žiga Virk"
+author: "Erik Štrumbelj, Gašper Fijavž, and Žiga Virk"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 documentclass: book

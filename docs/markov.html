@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 2 Markov Chains | Mathematics 2 - exercises</title>
+  <title>Chapter 4 Markov Chains | Mathematics 2 - exercises</title>
   <meta name="description" content="Course notes" />
   <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 2 Markov Chains | Mathematics 2 - exercises" />
+  <meta property="og:title" content="Chapter 4 Markov Chains | Mathematics 2 - exercises" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://fri-datascience.github.io/course_ma2/" />
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 2 Markov Chains | Mathematics 2 - exercises" />
+  <meta name="twitter:title" content="Chapter 4 Markov Chains | Mathematics 2 - exercises" />
   
   <meta name="twitter:description" content="Course notes" />
   
@@ -24,14 +24,14 @@
 <meta name="author" content="Erik Štrumbelj and Žiga Virk" />
 
 
-<meta name="date" content="2021-03-21" />
+<meta name="date" content="2021-04-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="gradient.html"/>
+<link rel="prev" href="montecarlo.html"/>
 <link rel="next" href="MCMC.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -74,11 +74,17 @@
 <li class="chapter" data-level="1.1" data-path="gradient.html"><a href="gradient.html#theoretical-problems"><i class="fa fa-check"></i><b>1.1</b> Theoretical problems</a></li>
 <li class="chapter" data-level="1.2" data-path="gradient.html"><a href="gradient.html#practical-problems"><i class="fa fa-check"></i><b>1.2</b> Practical problems</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="markov.html"><a href="markov.html"><i class="fa fa-check"></i><b>2</b> Markov Chains</a></li>
-<li class="chapter" data-level="3" data-path="MCMC.html"><a href="MCMC.html"><i class="fa fa-check"></i><b>3</b> Markov Chain Monte Carlo</a></li>
+<li class="chapter" data-level="2" data-path="NA.html"><a href="NA.html"><i class="fa fa-check"></i><b>2</b> NA</a><ul>
+<li class="chapter" data-level="2.1" data-path="NA.html"><a href="NA.html#th02"><i class="fa fa-check"></i><b>2.1</b> Theoretical problems</a></li>
+<li class="chapter" data-level="2.2" data-path="NA.html"><a href="NA.html#pr02"><i class="fa fa-check"></i><b>2.2</b> Practical problems</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="montecarlo.html"><a href="montecarlo.html"><i class="fa fa-check"></i><b>3</b> Monte Carlo</a></li>
+<li class="chapter" data-level="4" data-path="markov.html"><a href="markov.html"><i class="fa fa-check"></i><b>4</b> Markov Chains</a></li>
+<li class="chapter" data-level="5" data-path="MCMC.html"><a href="MCMC.html"><i class="fa fa-check"></i><b>5</b> Markov Chain Monte Carlo</a></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
-<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>      
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
 </ul>
 
       </nav>
@@ -97,7 +103,7 @@
 
             <section class="normal" id="section-">
 <div id="markov" class="section level1">
-<h1><span class="header-section-number">Chapter 2</span> Markov Chains</h1>
+<h1><span class="header-section-number">Chapter 4</span> Markov Chains</h1>
 <style>
 .fold-btn { 
   float: right; 
@@ -122,7 +128,7 @@ $(document).ready(function() {
 </script>
 
 <div class="exercise">
-<p><span id="exr:unnamed-chunk-17" class="exercise"><strong>Exercise 2.1  (Properties of Markov Chains)  </strong></span>For each of the Markov chains defined below do the following:</p>
+<p><span id="exr:unnamed-chunk-24" class="exercise"><strong>Exercise 4.1  (Properties of Markov Chains)  </strong></span>For each of the Markov chains defined below do the following:</p>
 <ul>
 <li>Find all communicating classes and show whether or not the chain is irreducible,</li>
 <li>For each state determine its period and whether it is transient, positive recurrent or null recurrent.</li>
@@ -160,7 +166,7 @@ $(document).ready(function() {
           </div>
         </div>
       </div>
-<a href="gradient.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="montecarlo.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 <a href="MCMC.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>

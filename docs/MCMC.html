@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 3 Markov Chain Monte Carlo | Mathematics 2 - exercises</title>
+  <title>Chapter 5 Markov Chain Monte Carlo | Mathematics 2 - exercises</title>
   <meta name="description" content="Course notes" />
   <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 3 Markov Chain Monte Carlo | Mathematics 2 - exercises" />
+  <meta property="og:title" content="Chapter 5 Markov Chain Monte Carlo | Mathematics 2 - exercises" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://fri-datascience.github.io/course_ma2/" />
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 3 Markov Chain Monte Carlo | Mathematics 2 - exercises" />
+  <meta name="twitter:title" content="Chapter 5 Markov Chain Monte Carlo | Mathematics 2 - exercises" />
   
   <meta name="twitter:description" content="Course notes" />
   
@@ -24,7 +24,7 @@
 <meta name="author" content="Erik Štrumbelj and Žiga Virk" />
 
 
-<meta name="date" content="2021-03-21" />
+<meta name="date" content="2021-04-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -74,11 +74,17 @@
 <li class="chapter" data-level="1.1" data-path="gradient.html"><a href="gradient.html#theoretical-problems"><i class="fa fa-check"></i><b>1.1</b> Theoretical problems</a></li>
 <li class="chapter" data-level="1.2" data-path="gradient.html"><a href="gradient.html#practical-problems"><i class="fa fa-check"></i><b>1.2</b> Practical problems</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="markov.html"><a href="markov.html"><i class="fa fa-check"></i><b>2</b> Markov Chains</a></li>
-<li class="chapter" data-level="3" data-path="MCMC.html"><a href="MCMC.html"><i class="fa fa-check"></i><b>3</b> Markov Chain Monte Carlo</a></li>
+<li class="chapter" data-level="2" data-path="NA.html"><a href="NA.html"><i class="fa fa-check"></i><b>2</b> NA</a><ul>
+<li class="chapter" data-level="2.1" data-path="NA.html"><a href="NA.html#th02"><i class="fa fa-check"></i><b>2.1</b> Theoretical problems</a></li>
+<li class="chapter" data-level="2.2" data-path="NA.html"><a href="NA.html#pr02"><i class="fa fa-check"></i><b>2.2</b> Practical problems</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="montecarlo.html"><a href="montecarlo.html"><i class="fa fa-check"></i><b>3</b> Monte Carlo</a></li>
+<li class="chapter" data-level="4" data-path="markov.html"><a href="markov.html"><i class="fa fa-check"></i><b>4</b> Markov Chains</a></li>
+<li class="chapter" data-level="5" data-path="MCMC.html"><a href="MCMC.html"><i class="fa fa-check"></i><b>5</b> Markov Chain Monte Carlo</a></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
-<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>      
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
 </ul>
 
       </nav>
@@ -97,7 +103,7 @@
 
             <section class="normal" id="section-">
 <div id="MCMC" class="section level1">
-<h1><span class="header-section-number">Chapter 3</span> Markov Chain Monte Carlo</h1>
+<h1><span class="header-section-number">Chapter 5</span> Markov Chain Monte Carlo</h1>
 <style>
 .fold-btn { 
   float: right; 
@@ -122,7 +128,7 @@ $(document).ready(function() {
 </script>
 
 <div class="exercise">
-<p><span id="exr:unnamed-chunk-19" class="exercise"><strong>Exercise 3.1  (Monte Carlo Integration)  </strong></span>Let <span class="math inline">\(X \sim N(0, 1)\)</span> and <span class="math inline">\(f(x) = 10\exp(-5(x - 3)^4)\)</span>. We are interested in computing the expectation of <span class="math inline">\(f\)</span> with respect to <span class="math inline">\(X\)</span>.</p>
+<p><span id="exr:unnamed-chunk-26" class="exercise"><strong>Exercise 5.1  (Monte Carlo Integration)  </strong></span>Let <span class="math inline">\(X \sim N(0, 1)\)</span> and <span class="math inline">\(f(x) = 10\exp(-5(x - 3)^4)\)</span>. We are interested in computing the expectation of <span class="math inline">\(f\)</span> with respect to <span class="math inline">\(X\)</span>.</p>
 <ol style="list-style-type: lower-alpha">
 <li>Approximate the integral using a quadrature based method (you may use a third-party library).</li>
 <li>Approximate the integral using Monte Carlo (100 samples).</li>
@@ -135,7 +141,7 @@ $(document).ready(function() {
 </ol>
 
 <div class="exercise">
-<p><span id="exr:unnamed-chunk-20" class="exercise"><strong>Exercise 3.2  (Bayesian inference for logistic regression )  </strong></span>The goal of this problem is to implement a Metropolis-Hastings sampler for Bayesian logistic regression.</p>
+<p><span id="exr:unnamed-chunk-27" class="exercise"><strong>Exercise 5.2  (Bayesian inference for logistic regression )  </strong></span>The goal of this problem is to implement a Metropolis-Hastings sampler for Bayesian logistic regression.</p>
 <ol style="list-style-type: lower-alpha">
 <li>Generate a toy dataset with 100 observations, each with 5 real-valued predictors <span class="math inline">\(x_1,...,x_5\)</span> and a binary dependent variable <span class="math inline">\(Y\)</span>. All predictors are standard normal and <span class="math inline">\(Y_i \sim Bernoulli(\frac{1}{1 + e^{-\mu_i}}),\)</span> where <span class="math inline">\(\mu_i = 3x_1 - 2x_2 + \frac{1}{10}x_3 + 1\)</span>. That is, we have a classification problem where only the first three predictors are relevant.</li>
 <li>Implement the logistic regression likelihood with an arbitrary number of coefficients (same as above, but <span class="math inline">\(\mu_i = \beta^Tx_i\)</span>, where <span class="math inline">\(x_i\)</span> is now a vector) and combine it with a weakly-informative standard normal prior <span class="math inline">\(\beta_i \sim N(0, 100)\)</span> to get a function that is proportional to the posterior distribution of the logistic regression model.</li>
@@ -147,7 +153,7 @@ $(document).ready(function() {
 </ol>
 
 <div class="exercise">
-<p><span id="exr:unnamed-chunk-21" class="exercise"><strong>Exercise 3.3  (Tuning the M-H sampler for the Banana function)  </strong></span>Plot a contour plot of this function (it should look like a banana):</p>
+<p><span id="exr:unnamed-chunk-28" class="exercise"><strong>Exercise 5.3  (Tuning the M-H sampler for the Banana function)  </strong></span>Plot a contour plot of this function (it should look like a banana):</p>
 <p><code>fn &lt;- function(x) {   exp(-(x[1]^2)/200- 0.5 * (x[2]+ 0.05 * x[1]^2 - 100*0.05)^2 ) }</code></p>
 <p>The goal is to sample from the distribution whose density is proportional to the above function.</p>
 <p>Implement a Metropolis-Hastings sampler. Below are three different proposal distributions. For each proposal distributin separately do the following: Draw 1000 samples from 3 different starting points (= 3 different chains). For each chain:</p>
