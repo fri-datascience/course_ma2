@@ -21,10 +21,10 @@
   <meta name="twitter:description" content="Course notes" />
   
 
-<meta name="author" content="Erik Štrumbelj and Žiga Virk" />
+<meta name="author" content="Erik Štrumbelj, Gašper Fijavž, and Žiga Virk" />
 
 
-<meta name="date" content="2021-04-03" />
+<meta name="date" content="2021-04-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -52,6 +52,43 @@
 
 
 
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
@@ -84,7 +121,6 @@
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
-
 </ul>
 
       </nav>
@@ -104,6 +140,244 @@
             <section class="normal" id="section-">
 <div id="montecarlo" class="section level1">
 <h1><span class="header-section-number">Chapter 3</span> Monte Carlo</h1>
+<style>
+.fold-btn { 
+  float: right; 
+  margin: 5px 5px 0 0;
+}
+.fold { 
+  border: 1px solid black;
+  min-height: 40px;
+}
+</style>
+<script type="text/javascript">
+$(document).ready(function() {
+  $folds = $(".fold");
+  $folds.wrapInner("<div class=\"fold-blck\">"); // wrap a div container around content
+  $folds.prepend("<button class=\"fold-btn\">Unfold Solution</button>");  // add a button
+  $(".fold-blck").toggle();  // fold all blocks
+  $(".fold-btn").on("click", function() {  // add onClick event
+    $(this).text($(this).text() === "Fold Solution" ? "Unfold Solution" : "Fold Solution");  // if the text equals "Fold", change it to "Unfold"or else to "Fold" 
+    $(this).next(".fold-blck").toggle("linear");  // "swing" is the default easing function. This can be further customized in its speed or the overall animation itself.
+  })
+});
+</script>
+
+<div class="exercise">
+<p><span id="exr:unnamed-chunk-2" class="exercise"><strong>Exercise 3.1  (Properties of a distribution from samples)  </strong></span> Let <span class="math inline">\(X \sim Gamma(\alpha = 4, \beta = 2)\)</span>. Note that we are using the shape/rate parametrization. That is, the PDF is</p>
+<p><span class="math display">\[p(x) = \frac{\beta^\alpha}{\Gamma(\alpha)} x^{\alpha - 1}e^{-\beta x}.\]</span></p>
+<p>We are interested a few properties of <span class="math inline">\(X\)</span>:</p>
+<ul>
+<li><span class="math inline">\(E[X]\)</span>,</li>
+<li><span class="math inline">\(Var[X]\)</span>,</li>
+<li><span class="math inline">\(P(1 &lt; X \leq 2)\)</span>,</li>
+<li>a plot of the CDF of <span class="math inline">\(X\)</span>.</li>
+</ul>
+<ol style="list-style-type: lower-alpha">
+<li>Compute the above using the known theoretical properties of the Gamma distribution. For the CDF-related tasks you only need built-in functions for the Gamma and incomplete Gamma. For the latter you can use a package or go from the definition and use numerical integration. Compare with built-in pgamma or its equivalent in your programming language of choice.</li>
+<li>Compute the above using 100 independent samples from <span class="math inline">\(Gamma(4, 2)\)</span>. You can draw these samples using rgamma() or its equivalent in your programming language of choice.</li>
+<li>Compare results from (a) and (b). Why do we get better approximations for some tasks and worse for others?
+</div>
+</li>
+</ol>
+<div class="fold">
+
+<div class="solution">
+<p> <span class="solution"><em>Solution. </em></span>  The solution is as follows:</p>
+<ol style="list-style-type: lower-alpha">
+<li>The mean of the Gamma distribution in this parametrization is <span class="math inline">\(E[X] = \frac{\alpha}{\beta} = 2\)</span> and its variance is <span class="math inline">\(Var[X] = \frac{\alpha}{\beta^2} = 1\)</span>. The CDF is</li>
+</ol>
+<p><span class="math display">\[F(x) = \frac{1}{\Gamma(\alpha)}\gamma(\alpha, \beta x),\]</span></p>
+<p>where <span class="math inline">\(\gamma(,)\)</span> is the lower incomplete Gamma function.</p>
+</div>
+
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># the lower incomplete gamma function (vectorized in  the second argument only)</span>
+ligf &lt;-<span class="st"> </span><span class="cf">function</span>(a, b) {
+  fn &lt;-<span class="st"> </span><span class="cf">function</span>(x, s) {
+    x<span class="op">^</span>(a <span class="op">-</span><span class="st"> </span><span class="dv">1</span>) <span class="op">*</span><span class="st"> </span><span class="kw">exp</span>(<span class="op">-</span>x)
+  }
+  res &lt;-<span class="st"> </span><span class="kw">c</span>()
+  
+  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(b)) {
+    res &lt;-<span class="st"> </span><span class="kw">c</span>(res, <span class="kw">integrate</span>(fn, <span class="dt">lower =</span> <span class="dv">0</span>, <span class="dt">upper =</span> b[i], <span class="dt">s =</span> a)<span class="op">$</span>value)
+  }
+  res
+}
+
+<span class="co"># CDF of gamma</span>
+pg &lt;-<span class="st"> </span><span class="cf">function</span>(x, alpha, beta) {
+  (<span class="fl">1.0</span> <span class="op">/</span><span class="st"> </span><span class="kw">gamma</span>(alpha)) <span class="op">*</span><span class="st"> </span><span class="kw">ligf</span>(alpha, beta <span class="op">*</span><span class="st"> </span>x)
+}</code></pre></div>
+<p>We can use the above to solve tasks 3 and 4 and compare the results with R's built-in functions:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># P(1 &lt;= X &lt;= 2)</span>
+<span class="kw">pg</span>(<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">2</span>) <span class="op">-</span><span class="st"> </span><span class="kw">pg</span>(<span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">2</span>)</code></pre></div>
+<pre><code>## [1] 0.4236533</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">pgamma</span>(<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">2</span>) <span class="op">-</span><span class="st"> </span><span class="kw">pgamma</span>(<span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">2</span>)</code></pre></div>
+<pre><code>## [1] 0.4236533</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">10</span>, <span class="fl">0.01</span>)
+<span class="kw">plot</span>(x, <span class="kw">pg</span>(x, <span class="dv">4</span>, <span class="dv">2</span>), <span class="dt">type =</span> <span class="st">&quot;p&quot;</span>)
+<span class="kw">points</span>(x, <span class="kw">pgamma</span>(x, <span class="dv">4</span>, <span class="dv">2</span>), <span class="dt">type =</span> <span class="st">&quot;p&quot;</span>, <span class="dt">cex =</span> <span class="fl">0.2</span>, <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>)</code></pre></div>
+<p><img src="bookdown-ma2_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<ol start="2" style="list-style-type: lower-alpha">
+<li>We can estimate the mean and variance with the sample mean and sample average. We can estimate the integral from <span class="math inline">\(a\)</span> to <span class="math inline">\(b\)</span> with the proportion of samples that fall into that range. Similarly, we can estimate the CDF at any <span class="math inline">\(x\)</span> by counting the proportion of samples that are less or equal to <span class="math inline">\(x\)</span>. Recall that the latter is just the definition of the ECDF, which we know will converge uniformly to the CDF as the sample size grows.</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">0</span>)
+y &lt;-<span class="st"> </span><span class="kw">rgamma</span>(<span class="dv">100</span>, <span class="dv">4</span>, <span class="dv">2</span>)
+<span class="kw">mean</span>(y)</code></pre></div>
+<pre><code>## [1] 1.949221</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">var</span>(y)</code></pre></div>
+<pre><code>## [1] 0.6468588</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean</span>(<span class="dv">1</span> <span class="op">&lt;</span><span class="st"> </span>y <span class="op">&amp;</span><span class="st"> </span>y <span class="op">&lt;=</span><span class="st"> </span><span class="dv">2</span>)</code></pre></div>
+<pre><code>## [1] 0.46</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">z &lt;-<span class="st"> </span>x
+<span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(x)) {
+  z[i] &lt;-<span class="st"> </span><span class="kw">mean</span>(y <span class="op">&lt;=</span><span class="st"> </span>x[i])
+}
+<span class="kw">plot</span>(x, z, <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>)
+<span class="kw">points</span>(x, <span class="kw">pgamma</span>(x, <span class="dv">4</span>, <span class="dv">2</span>), <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">cex =</span> <span class="fl">0.2</span>, <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>)</code></pre></div>
+<p><img src="bookdown-ma2_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<ol start="3" style="list-style-type: lower-alpha">
+<li>Is left to the reader.</li>
+</ol>
+<p>```</p>
+</div>
+
+<div class="exercise">
+<p><span id="exr:unnamed-chunk-7" class="exercise"><strong>Exercise 3.2  (Integrating a single variable function)  </strong></span>We are going to integrate the PDF of the Beta(3, 1) (dbeta(x, 3, 1) in R) distribution on <span class="math inline">\((0,1)\)</span>. Because it is a PDF, we know that the integral should be 1.</p>
+<ol style="list-style-type: lower-alpha">
+<li>Integrate using the trapezoidal rule and plot the absolute error for different <span class="math inline">\(n\)</span>, where <span class="math inline">\(n\)</span> is the number of segments in our partition of <span class="math inline">\((0, 1)\)</span>. Use regular partitions.</li>
+<li>Integrate using Monte Carlo integration using independent samples from the uniform distribution on <span class="math inline">\((0, 1)\)</span>. That is, evaluating dbeta(n, 3, 1) on <span class="math inline">\(n\)</span> uniformly drawn points. Plot the absolute error for different <span class="math inline">\(n\)</span>.</li>
+<li>What can you say about the relationship between the approximation error and <span class="math inline">\(n\)</span> for <em>(a)</em> and <em>(b)</em>?</li>
+<li>Can you find a function on <span class="math inline">\((0,1)\)</span> where the trapezoidal rule would perform much worse than Monte Carlo integration.
+</div>
+</li>
+</ol>
+<div class="fold">
+
+<div class="solution">
+<p> <span class="solution"><em>Solution. </em></span>  a. First, we implement the trapezoidal rule integrator:</p>
+</div>
+
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">trapezoitegrator &lt;-<span class="st"> </span><span class="cf">function</span>(fn, lb, ub, n) {
+  delta &lt;-<span class="st"> </span>(ub <span class="op">-</span><span class="st"> </span>lb) <span class="op">/</span><span class="st"> </span>n
+  total &lt;-<span class="st"> </span><span class="dv">0</span>
+  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>n) {
+    total &lt;-<span class="st"> </span>total <span class="op">+</span><span class="st"> </span>delta <span class="op">*</span><span class="st"> </span>((<span class="kw">fn</span>(i <span class="op">*</span><span class="st"> </span>delta) <span class="op">+</span><span class="st"> </span><span class="kw">fn</span>((i <span class="op">-</span><span class="st"> </span><span class="dv">1</span>) <span class="op">*</span><span class="st"> </span>delta) ) <span class="op">/</span><span class="st"> </span><span class="fl">2.0</span>)
+  }
+  total
+}</code></pre></div>
+<p>Then we use it on our function for different <span class="math inline">\(n\)</span>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fn &lt;-<span class="st"> </span><span class="cf">function</span>(x) {<span class="kw">dbeta</span>(x, <span class="dv">3</span> ,<span class="dv">1</span>)}
+error &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="op">-</span><span class="ot">Inf</span>, <span class="dv">20</span>)
+<span class="cf">for</span> (n <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">20</span>) {
+  error[n] &lt;-<span class="st"> </span><span class="kw">abs</span>(<span class="kw">trapezoitegrator</span>(fn, <span class="dv">0</span>, <span class="dv">1</span>, n) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)
+}
+<span class="kw">plot</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">20</span>, error, <span class="dt">type =</span> <span class="st">&quot;b&quot;</span>, <span class="dt">xlab =</span> <span class="st">&quot;n&quot;</span>)</code></pre></div>
+<p><img src="bookdown-ma2_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<ol start="2" style="list-style-type: lower-alpha">
+<li>Monte Carlo integration requires less work. We only need to sample <span class="math inline">\(n\)</span> samples from the uniform, evaluate our function at those points, and compute the mean. In general we would also have to multiply with the lenght of the interval we are integrating over (area = average height times lenght), but that is 1 in this case.</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">0</span>)
+n &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">1</span>, <span class="dv">1000</span>, <span class="dv">5</span>)
+error &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="op">-</span><span class="ot">Inf</span>, <span class="kw">length</span>(n))
+<span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(n)) {
+  z &lt;-<span class="st"> </span><span class="kw">runif</span>(n[i])
+  error[i] &lt;-<span class="st"> </span><span class="kw">abs</span>(<span class="kw">mean</span>(<span class="kw">dbeta</span>(z, <span class="dv">3</span>, <span class="dv">1</span>)) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)
+}
+<span class="kw">plot</span>(n, error, <span class="dt">type =</span> <span class="st">&quot;b&quot;</span>, <span class="dt">xlab =</span> <span class="st">&quot;n&quot;</span>)</code></pre></div>
+<p><img src="bookdown-ma2_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<ol start="3" style="list-style-type: lower-alpha">
+<li>Is left to the reader.</li>
+<li>Is left to the reader.</li>
+</ol>
+<p>```</p>
+</div>
+
+<div class="exercise">
+<p><span id="exr:unnamed-chunk-12" class="exercise"><strong>Exercise 3.3  (Simulating a 6-sided die)  </strong></span>Write a random number generator for a fair 6-sided die using the inverse transform method. Draw 10000 samples and compute the relative frequencies of outcomes.</p>
+<p>Don't use the built-in RNG to generate uniform random numbers between 0 and 1. Instead, use the Linear Congruential Generator</p>
+<span class="math display">\[ x_{n+1} = (1664525 x_{n} + 1013904223) \mod 2^{32}.\]</span> Note: Scale by dividing with maximum possible number to get numbers between 0 and 1.
+</div>
+
+<div class="fold">
+
+<div class="solution">
+<p> <span class="solution"><em>Solution. </em></span>  First, let's implement our uniform random number generator:</p>
+</div>
+
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rng &lt;-<span class="st"> </span><span class="cf">function</span>(n, <span class="dt">seed =</span> <span class="dv">0</span>) {
+  x &lt;-<span class="st"> </span>seed
+  
+  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>n) {
+    x &lt;-<span class="st"> </span><span class="kw">c</span>(x, (<span class="dv">1664525</span> <span class="op">*</span><span class="st"> </span>x[<span class="kw">length</span>(x)] <span class="op">+</span><span class="st"> </span><span class="dv">1013904223</span>) <span class="op">%%</span><span class="st"> </span><span class="dv">2</span><span class="op">^</span><span class="dv">32</span>)
+  }
+  x <span class="op">/</span><span class="st"> </span>(<span class="dv">2</span><span class="op">^</span><span class="dv">32</span> <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)
+}</code></pre></div>
+<p>Now we can use it to generate samples from an fair 6-sided die:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">inverse_cdf &lt;-<span class="st"> </span><span class="cf">function</span>(x) {
+  <span class="cf">if</span> (x <span class="op">&lt;</span><span class="st"> </span><span class="dv">1</span><span class="op">/</span><span class="dv">6</span>) <span class="kw">return</span> (<span class="dv">1</span>)
+  <span class="cf">if</span> (x <span class="op">&lt;</span><span class="st"> </span><span class="dv">2</span><span class="op">/</span><span class="dv">6</span>) <span class="kw">return</span> (<span class="dv">2</span>)
+  <span class="cf">if</span> (x <span class="op">&lt;</span><span class="st"> </span><span class="dv">3</span><span class="op">/</span><span class="dv">6</span>) <span class="kw">return</span> (<span class="dv">3</span>)
+  <span class="cf">if</span> (x <span class="op">&lt;</span><span class="st"> </span><span class="dv">4</span><span class="op">/</span><span class="dv">6</span>) <span class="kw">return</span> (<span class="dv">4</span>)
+  <span class="cf">if</span> (x <span class="op">&lt;</span><span class="st"> </span><span class="dv">5</span><span class="op">/</span><span class="dv">6</span>) <span class="kw">return</span> (<span class="dv">5</span>)
+  <span class="kw">return</span> (<span class="dv">6</span>)
+}
+
+<span class="co"># generate 10000 samples</span>
+x &lt;-<span class="st"> </span><span class="kw">sapply</span>(<span class="kw">rng</span>(<span class="dv">10000</span>, <span class="dv">0</span>), inverse_cdf)
+<span class="kw">table</span>(x) <span class="op">/</span><span class="st"> </span><span class="dv">10000</span></code></pre></div>
+<pre><code>## x
+##      1      2      3      4      5      6 
+## 0.1689 0.1673 0.1634 0.1665 0.1651 0.1689</code></pre>
+<p>```</p>
+</div>
+
+<div class="exercise">
+<p><span id="exr:unnamed-chunk-16" class="exercise"><strong>Exercise 3.4  (Estimating pi)  </strong></span>Take the <span class="math inline">\([-1,1] \times [-1,1]\)</span> rectangle and inscribe a circle. The circle has radius 1, so the ratio between the area of the circle and the area of the rectangle is <span class="math inline">\(\frac{\pi}{4}\)</span>.</p>
+<ol style="list-style-type: lower-alpha">
+<li>Let's sample from the area of the rectangle, which is easy, and count how many points are less than 1 away from the center. The ratio of those points multiplied by 4 should give us an estimate of <span class="math inline">\(\pi\)</span>.</li>
+<li>Compute the approximation standard error of your estimate. How many samples, approximately, do we need, to get <span class="math inline">\(\pi\)</span> correct up to including the second decimal place?
+</div>
+</li>
+</ol>
+<div class="fold">
+
+<div class="solution">
+ <span class="solution"><em>Solution. </em></span>  The algorithm is just taking <span class="math inline">\(n\)</span> samples from the rectangle and computing their distances from the center. We use the simple asymptotic normality argument-based approximation to the approximation standard error.
+</div>
+
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">0</span>)
+n &lt;-<span class="st"> </span><span class="dv">1000000</span>
+x1 &lt;-<span class="st"> </span><span class="kw">runif</span>(n, <span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)
+x2 &lt;-<span class="st"> </span><span class="kw">runif</span>(n, <span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)
+dist &lt;-<span class="st"> </span><span class="kw">sqrt</span>(x1<span class="op">^</span><span class="dv">2</span> <span class="op">+</span><span class="st"> </span>x2<span class="op">^</span><span class="dv">2</span>)
+in_circle &lt;-<span class="st"> </span>dist <span class="op">&lt;</span><span class="st"> </span><span class="dv">1</span>
+<span class="kw">mean</span>(<span class="dv">4</span> <span class="op">*</span><span class="st"> </span>in_circle)         <span class="co"># estimate of PI</span></code></pre></div>
+<pre><code>## [1] 3.142368</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sd</span>(<span class="dv">4</span> <span class="op">*</span><span class="st"> </span>in_circle) <span class="op">/</span><span class="st"> </span><span class="kw">sqrt</span>(n) <span class="co"># approximation standard error</span></code></pre></div>
+<pre><code>## [1] 0.001641645</code></pre>
+<p>It takes around 1 million samples to get it right on the 2nd decimal.</p>
+<p>```</p>
+</div>
+
+<div class="exercise">
+<p><span id="exr:unnamed-chunk-19" class="exercise"><strong>Exercise 3.5  (Hello Rejection Sampling Kitty)  </strong></span>We want to paint a huge image of Hello Kitty on the side of a building (the proportions of the image below correspond to the building). We already painted the side all white, using approximately 100 litres of white paint. Approximately how many litres of black paint do we have to order so that we can paint the Hello Kitty silhouette?</p>
+<img src="images/hello_kitty.png" alt="Hello Kitty" />
+</div>
+
+
+<div class="exercise">
+<p><span id="exr:unnamed-chunk-20" class="exercise"><strong>Exercise 3.6  (More Monte Carlo Integration)  </strong></span>Let <span class="math inline">\(X \sim N(0, 1)\)</span> and <span class="math inline">\(f(x) = 10\exp(-5(x - 3)^4)\)</span>. We are interested in computing the expectation of <span class="math inline">\(f\)</span> with respect to <span class="math inline">\(X\)</span>.</p>
+<ol style="list-style-type: lower-alpha">
+<li>Approximate the integral using a quadrature based method (you may use a third-party library).</li>
+<li>Approximate the integral using Monte Carlo (100 samples).</li>
+<li>Repeat <em>(b)</em> 1000 times, for each repetition compute a 90% CI using the normal approximation, and observe whether or not the CI contains the 'true' value (use result from <em>(a)</em> as true value). Does it contain the true value 90% of the time? Discuss. Note: This task requires you to repeat the process of estimating the integral with 100 points 1000 times. Each of the 1000 repetitions will give you a different estimate and confidence interval, of course, because the samples are drawn at random.</li>
+<li>Approximate the integral using importance sampling (100 samples) with a sensible choice of surrogate distribution. Compare the variance of your importance sampling estimator with the variance of the Monte Carlo estimator from <em>(b)</em> and discuss.</li>
+<li>Approximate the integral using Monte Carlo (100 samples) but instead of using the build-in generator for the standard normal distribution, implement rejection sampling using a logistic distribution-based envelope. Compare the variance of this estimator with the variance of estimator from <em>(b)</em> and discuss.</li>
+<li>Approximate the integral using Monte Carlo (100 samples) but instead of using the build-in generator for the standard normal distribution, implement Metropolis-Hastings with a <span class="math inline">\(U(x_i - \delta, x_i + \delta), \delta &gt; 0\)</span> proposal distribution. How do the variance of the estimator and the rejection rate change with <span class="math inline">\(\delta\)</span>? Find the optimal <span class="math inline">\(\delta\)</span> and compare the optimal variance with <em>(b)</em>. What is the effective sample size (ESS)? You may use a library for MCMC variance estimation.
+</div>
+</li>
+</ol>
 
 </div>
             </section>
