@@ -24,7 +24,7 @@
 <meta name="author" content="Erik Štrumbelj, Gašper Fijavž, and Žiga Virk" />
 
 
-<meta name="date" content="2021-04-08" />
+<meta name="date" content="2021-04-18" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -378,6 +378,97 @@ in_circle &lt;-<span class="st"> </span>dist <span class="op">&lt;</span><span c
 </div>
 </li>
 </ol>
+
+<div class="exercise">
+<p><span id="exr:unnamed-chunk-21" class="exercise"><strong>Exercise 3.7  (When Monte Carlo fails - Pareto distribution)  </strong></span>The Pareto distribution has, for certain parameter values, finite mean but infinite variance. Theory says that for such random variables we will converge to the mean but the error will be infinite.</p>
+Draw 100000 independent samples from a Pareto distribution with scale 1 and shape (alpha) 1.1 and plot the cumulative average over samples (i-th point is the average of the first i samples). Note that it has mean 11. Discuss what you see.
+</div>
+
+<div class="fold">
+
+<div class="solution">
+ <span class="solution"><em>Solution. </em></span> 
+</div>
+
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
+<span class="kw">library</span>(Pareto)</code></pre></div>
+<pre><code>## Warning: package &#39;Pareto&#39; was built under R version 4.0.5</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">0</span>)
+
+x &lt;-<span class="st"> </span><span class="kw">rPareto</span>(<span class="dv">100000</span>, <span class="dv">1</span>, <span class="fl">1.1</span>)
+<span class="kw">ggplot</span>(<span class="kw">data.frame</span>(<span class="dt">y =</span> <span class="kw">cumsum</span>(x) <span class="op">/</span><span class="st"> </span>(<span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(x)), <span class="dt">x =</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(x)), <span class="kw">aes</span>(<span class="dt">x =</span> x, <span class="dt">y =</span> y)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>()</code></pre></div>
+<p><img src="bookdown-ma2_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+</div>
+
+<div class="exercise">
+<p><span id="exr:unnamed-chunk-24" class="exercise"><strong>Exercise 3.8  (When Monte Carlo fails - Cauchy distribution)  </strong></span>The Cauchy distribution has undefined variance and mean, due to its heavy tails. Neither the strong nor the weak law of large numbers apply. Futhermore, the sum of two independent Cauchy is again Cauchy. All this points to that estimating the mean of a Cauchy distributed random variable via Monte Carlo will not work.</p>
+Draw 100000 independent samples from a standard Cauchy (or any other Cauchy, if you want) and plot the cumulative average over samples (i-th point is the average of the first i samples). Discuss what you see.
+</div>
+
+<div class="fold">
+
+<div class="solution">
+ <span class="solution"><em>Solution. </em></span> 
+</div>
+
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
+<span class="kw">set.seed</span>(<span class="dv">0</span>)
+x &lt;-<span class="st"> </span><span class="kw">rcauchy</span>(<span class="dv">100000</span>)
+<span class="kw">ggplot</span>(<span class="kw">data.frame</span>(<span class="dt">y =</span> <span class="kw">cumsum</span>(x) <span class="op">/</span><span class="st"> </span>(<span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(x)), <span class="dt">x =</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(x)), <span class="kw">aes</span>(<span class="dt">x =</span> x, <span class="dt">y =</span> y)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>()</code></pre></div>
+<p><img src="bookdown-ma2_files/figure-html/unnamed-chunk-26-1.png" width="672" /> ```</p>
+</div>
+
+<div class="exercise">
+<span id="exr:unnamed-chunk-27" class="exercise"><strong>Exercise 3.9  (Sampling from a logistic distribution)  </strong></span>The logistic distribution has a nice CDF and quantile function. Write a random number generator for the standard logistic distribution (zero mean, unit variance) using the inverse transform method. Compare the distribution of your draws with the distribution of the built in generator for the logistic distribution (rlogis in R).
+</div>
+
+
+<div class="exercise">
+<p><span id="exr:unnamed-chunk-28" class="exercise"><strong>Exercise 3.10  (Importance sampling)  </strong></span>Importance sampling can be used for reducing the variance of our estimator by choosing a proposal that more closely matches the product of the shapes of the distribution and the function. It can also be used in cases where it is difficult to sample from the target distribution but we have a proposal distribution that is easy to sample from.</p>
+<p>Our task is to compute <span class="math inline">\(E[X^2]\)</span>, where <span class="math inline">\(X\)</span> has a standard normal distribution. We will pretend that our programming language does not have a RNG for this distribution, but we do have access to a standard logistic RNG.</p>
+<ol style="list-style-type: lower-alpha">
+<li>Implement importance sampling for the above expectation and estimate it using 100 draws from the standard logistic</li>
+<li>Now use the standard normal RNG to perform ordinary Monte Carlo. Compare the estimate and its error with (a).</li>
+<li>Compute the integral using a quadrature method and compare with (a) and (b).</li>
+<li>Now reverse the problem and suppose that the goal is to compute the expectation with respect to the standard logistic and we use the standard normal as the proposal distribution. If you repeat (a-c) you should see that the error of importance sampling is now much larger. Why is it that the logistic is a good proposal for the normal but not vice-versa?
+</div>
+</li>
+</ol>
+<div class="fold">
+
+<div class="solution">
+ <span class="solution"><em>Solution. </em></span> 
+</div>
+
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Importance sampling</span>
+<span class="kw">set.seed</span>(<span class="dv">0</span>)
+n &lt;-<span class="st"> </span><span class="dv">100</span>
+x &lt;-<span class="st"> </span><span class="kw">rlogis</span>(n)
+x &lt;-<span class="st"> </span>x<span class="op">^</span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">dnorm</span>(x) <span class="op">/</span><span class="st"> </span><span class="kw">dlogis</span>(x) <span class="co"># importance weighting</span>
+<span class="kw">mean</span>(x)</code></pre></div>
+<pre><code>## [1] 1.043838</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sd</span>(x) <span class="op">/</span><span class="st"> </span><span class="kw">sqrt</span>(n)</code></pre></div>
+<pre><code>## [1] 0.07390657</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Monte Carlo</span>
+x &lt;-<span class="st"> </span><span class="kw">rnorm</span>(n)
+x &lt;-<span class="st"> </span>x<span class="op">^</span><span class="dv">2</span>
+<span class="kw">mean</span>(x)</code></pre></div>
+<pre><code>## [1] 0.7869361</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sd</span>(x) <span class="op">/</span><span class="st"> </span><span class="kw">sqrt</span>(n)</code></pre></div>
+<pre><code>## [1] 0.09931921</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Quadrature method</span>
+fn &lt;-<span class="st"> </span><span class="cf">function</span>(x) {
+  x<span class="op">^</span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">dnorm</span>(x)
+}
+
+<span class="kw">integrate</span>(fn, <span class="op">-</span><span class="ot">Inf</span>, <span class="ot">Inf</span>)</code></pre></div>
+<pre><code>## 1 with absolute error &lt; 1.2e-07</code></pre>
+<ol start="4" style="list-style-type: lower-alpha">
+<li>Is left to the reader. ```</li>
+</ol>
+</div>
 
 </div>
             </section>

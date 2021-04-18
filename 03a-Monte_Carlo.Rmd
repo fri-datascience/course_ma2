@@ -261,3 +261,89 @@ e. Approximate the integral using Monte Carlo (100 samples) but instead of using
 f. Approximate the integral using Monte Carlo (100 samples) but instead of using the build-in generator for the standard normal distribution, implement Metropolis-Hastings with a $U(x_i - \delta, x_i + \delta), \delta > 0$ proposal distribution. How do the variance of the estimator and the rejection rate change with $\delta$? Find the optimal $\delta$ and compare the optimal variance with *(b)*. What is the effective sample size (ESS)? You may use a library for MCMC variance estimation.
 ```
 
+
+```{exercise, name = "When Monte Carlo fails - Pareto distribution"}
+The Pareto distribution has, for certain parameter values, finite mean but infinite variance. Theory says that for such random variables we will converge to the mean but the error will be infinite.
+
+Draw 100000 independent samples from a Pareto distribution with scale 1 and shape (alpha) 1.1 and plot the cumulative average over samples (i-th point is the average of the first i samples). Note that it has mean 11. Discuss what you see.
+```
+
+
+<div class="fold">
+```{solution, echo = tog_ex}
+
+```{r, echo = T}
+library(ggplot2)
+library(Pareto)
+set.seed(0)
+
+x <- rPareto(100000, 1, 1.1)
+ggplot(data.frame(y = cumsum(x) / (1:length(x)), x = 1:length(x)), aes(x = x, y = y)) +
+  geom_point() + geom_line()
+```
+</div>
+
+
+```{exercise, name = "When Monte Carlo fails - Cauchy distribution"}
+The Cauchy distribution has undefined variance and mean, due to its heavy tails. Neither the strong nor the weak law of large numbers apply. Futhermore, the sum of two independent Cauchy is again Cauchy. All this points to that estimating the mean of a Cauchy distributed random variable via Monte Carlo will not work.
+
+Draw 100000 independent samples from a standard Cauchy (or any other Cauchy, if you want) and plot the cumulative average over samples (i-th point is the average of the first i samples). Discuss what you see.
+```
+
+<div class="fold">
+```{solution, echo = tog_ex}
+
+```{r, echo = T}
+library(ggplot2)
+set.seed(0)
+x <- rcauchy(100000)
+ggplot(data.frame(y = cumsum(x) / (1:length(x)), x = 1:length(x)), aes(x = x, y = y)) +
+  geom_point() + geom_line()
+```
+```
+</div>
+
+```{exercise, name = "Sampling from a logistic distribution"}
+The logistic distribution has a nice CDF and quantile function. Write a random number generator for the standard logistic distribution (zero mean, unit variance) using the inverse transform method. Compare the distribution of your draws with the distribution of the built in generator for the logistic distribution (rlogis in R).
+```
+
+```{exercise, name = "Importance sampling"}
+Importance sampling can be used for reducing the variance of our estimator by choosing a proposal that more closely matches the product of the shapes of the distribution and the function. It can also be used in cases where it is difficult to sample from the target distribution but we have a proposal distribution that is easy to sample from.
+
+Our task is to compute $E[X^2]$, where $X$ has a standard normal distribution. We will pretend that our programming language does not have a RNG for this distribution, but we do have access to a standard logistic RNG.
+
+a. Implement importance sampling for the above expectation and estimate it using 100 draws from the standard logistic
+b. Now use the standard normal RNG to perform ordinary Monte Carlo. Compare the estimate and its error with (a).
+c. Compute the integral using a quadrature method and compare with (a) and (b).
+d. Now reverse the problem and suppose that the goal is to compute the expectation with respect to the standard logistic and we use the standard normal as the proposal distribution. If you repeat (a-c) you should see that the error of importance sampling is now much larger. Why is it that the logistic is a good proposal for the normal but not vice-versa?
+```
+
+<div class="fold">
+```{solution, echo = tog_ex}
+
+```{r, echo = T}
+# Importance sampling
+set.seed(0)
+n <- 100
+x <- rlogis(n)
+x <- x^2 * dnorm(x) / dlogis(x) # importance weighting
+mean(x)
+sd(x) / sqrt(n)
+
+# Monte Carlo
+x <- rnorm(n)
+x <- x^2
+mean(x)
+sd(x) / sqrt(n)
+
+# Quadrature method
+fn <- function(x) {
+  x^2 * dnorm(x)
+}
+
+integrate(fn, -Inf, Inf)
+```
+
+d. Is left to the reader.
+```
+</div>
