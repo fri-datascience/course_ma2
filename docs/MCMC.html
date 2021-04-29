@@ -21,10 +21,10 @@
   <meta name="twitter:description" content="Course notes" />
   
 
-<meta name="author" content="Erik Štrumbelj and Žiga Virk" />
+<meta name="author" content="Erik Štrumbelj, Gašper Fijavž, and Žiga Virk" />
 
 
-<meta name="date" content="2021-04-03" />
+<meta name="date" content="2021-04-29" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -84,7 +84,6 @@
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
-
 </ul>
 
       </nav>
@@ -128,20 +127,7 @@ $(document).ready(function() {
 </script>
 
 <div class="exercise">
-<p><span id="exr:unnamed-chunk-26" class="exercise"><strong>Exercise 5.1  (Monte Carlo Integration)  </strong></span>Let <span class="math inline">\(X \sim N(0, 1)\)</span> and <span class="math inline">\(f(x) = 10\exp(-5(x - 3)^4)\)</span>. We are interested in computing the expectation of <span class="math inline">\(f\)</span> with respect to <span class="math inline">\(X\)</span>.</p>
-<ol style="list-style-type: lower-alpha">
-<li>Approximate the integral using a quadrature based method (you may use a third-party library).</li>
-<li>Approximate the integral using Monte Carlo (100 samples).</li>
-<li>Repeat (b) 1000 times, compute a 90% CI using the normal approximation, and observe whether or not the CI contains the 'true' value (use (a)). Does it contain the true value 90% of the time? Discuss.</li>
-<li>Approximate the integral using importance sampling (100 samples) with a sensible choice of surrogate distribution. Compare the variance of your importance sampling estimator with the variance of the Monte Carlo estimator from (b) and discuss.</li>
-<li>Approximate the integral using Monte Carlo (100 samples) but instead of using the build-in generator for the standard normal distribution, implement rejection sampling using a logistic distribution-based envelope. Compare the variance of this estimator with the variance of estimator from (b) and discuss.</li>
-<li>Approximate the integral using Monte Carlo (100 samples) but instead of using the build-in generator for the standard normal distribution, implement Metropolis-Hastings with a <span class="math inline">\(U(x_i - \delta, x_i + \delta), \delta &gt; 0\)</span> proposal distribution. How do the variance of the estimator and the rejection rate change with <span class="math inline">\(\delta\)</span>? Find the optimal <span class="math inline">\(\delta\)</span> and compare the optimal variance with (b). What is the effective sample size (ESS)? You may use a library for MCMC variance estimation.
-</div>
-</li>
-</ol>
-
-<div class="exercise">
-<p><span id="exr:unnamed-chunk-27" class="exercise"><strong>Exercise 5.2  (Bayesian inference for logistic regression )  </strong></span>The goal of this problem is to implement a Metropolis-Hastings sampler for Bayesian logistic regression.</p>
+<p><span id="exr:unnamed-chunk-2" class="exercise"><strong>Exercise 5.1  (Bayesian inference for logistic regression )  </strong></span>The goal of this problem is to implement a Metropolis-Hastings sampler for Bayesian logistic regression.</p>
 <ol style="list-style-type: lower-alpha">
 <li>Generate a toy dataset with 100 observations, each with 5 real-valued predictors <span class="math inline">\(x_1,...,x_5\)</span> and a binary dependent variable <span class="math inline">\(Y\)</span>. All predictors are standard normal and <span class="math inline">\(Y_i \sim Bernoulli(\frac{1}{1 + e^{-\mu_i}}),\)</span> where <span class="math inline">\(\mu_i = 3x_1 - 2x_2 + \frac{1}{10}x_3 + 1\)</span>. That is, we have a classification problem where only the first three predictors are relevant.</li>
 <li>Implement the logistic regression likelihood with an arbitrary number of coefficients (same as above, but <span class="math inline">\(\mu_i = \beta^Tx_i\)</span>, where <span class="math inline">\(x_i\)</span> is now a vector) and combine it with a weakly-informative standard normal prior <span class="math inline">\(\beta_i \sim N(0, 100)\)</span> to get a function that is proportional to the posterior distribution of the logistic regression model.</li>
@@ -153,7 +139,7 @@ $(document).ready(function() {
 </ol>
 
 <div class="exercise">
-<p><span id="exr:unnamed-chunk-28" class="exercise"><strong>Exercise 5.3  (Tuning the M-H sampler for the Banana function)  </strong></span>Plot a contour plot of this function (it should look like a banana):</p>
+<p><span id="exr:unnamed-chunk-3" class="exercise"><strong>Exercise 5.2  (Tuning the M-H sampler for the Banana function)  </strong></span>Plot a contour plot of this function (it should look like a banana):</p>
 <p><code>fn &lt;- function(x) {   exp(-(x[1]^2)/200- 0.5 * (x[2]+ 0.05 * x[1]^2 - 100*0.05)^2 ) }</code></p>
 <p>The goal is to sample from the distribution whose density is proportional to the above function.</p>
 <p>Implement a Metropolis-Hastings sampler. Below are three different proposal distributions. For each proposal distributin separately do the following: Draw 1000 samples from 3 different starting points (= 3 different chains). For each chain:</p>
@@ -166,7 +152,8 @@ $(document).ready(function() {
 <ol style="list-style-type: lower-alpha">
 <li>Sample uniformly from a square with side of length 1 and centered on the current state.</li>
 <li>Sample uniformly from a square with side of length 20 and centered on the current state.</li>
-<li>Suggest a proposal distribution that will be more efficient. Why is it difficult to come up with an efficient M-H proposal distribution for this density?</li>
+<li>Why is it difficult to come up with an efficient M-H proposal distribution for this density?</li>
+<li>Suggest a proposal that will substantially outperform (a) and (b). Hint: Adapting the distribution to the location is a good idea, but do not forget to correct if they are asymmetric.</li>
 </ol>
 </div>
 

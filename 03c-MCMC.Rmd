@@ -36,7 +36,7 @@ a. Generate a toy dataset with 100 observations, each with 5 real-valued predict
 b. Implement the logistic regression likelihood with an arbitrary number of coefficients (same as above, but $\mu_i = \beta^Tx_i$, where $x_i$ is now a vector) and combine it with a weakly-informative standard normal prior $\beta_i \sim N(0, 100)$ to get a function that is proportional to the posterior distribution of the logistic regression model.
 c. Use your own implementation of Metropolis-Hastings with a standard normal proposal to infer the parameters on the toy dataset. Generate 4 independent chains from the posterior with 10000 samples each. Inspect traceplots, rejection rate and lag-k covariances and compute effective sample size (ESS) for each parameter. You may use a library for MCMC variance estimation. Discuss if there is some reason for concern that the Markov chain is problematic.
 d. Do your best to improve the efficiency of the sampler by changing the covariance matrix of the proposal distribution. Report the rejection rate and ESS for the most efficient M-H sampler you get. Compare with those obtained in (3) and discuss.
-e. Estimate posterior means of $\beta_i$ using the most efficient sampler. Compare with the ground truth. Estimate the posterior probability $P(|\beta_3| > \frac{1}{10}|\text{data})$.
+e. Estimate posterior means of $\beta_i$ using the most efficient sampler. Compare with the ground truth and a MLE fit of logistic regression (you may use a third party library for the GLM). Estimate the posterior probability $P(|\beta_3| > \frac{1}{10}|\text{data})$.
 ```
 
 
@@ -62,6 +62,7 @@ Proposal distributions:
  
 a. Sample uniformly from a square with side of length 1 and centered on the current state.
 b. Sample uniformly from a square with side of length 20 and centered on the current state.
-c. Suggest a proposal distribution that will be more efficient. Why is it difficult to come up with an efficient M-H proposal distribution for this density?
+c. Why is it difficult to come up with an efficient M-H proposal distribution for this density?
+d. Suggest a proposal that will substantially outperform (a) and (b). Hint: Adapting the distribution to the location is a good idea, but do not forget to correct if they are asymmetric.
 
 ```
