@@ -40,7 +40,6 @@ e. Estimate posterior means of $\beta_i$ using the most efficient sampler. Compa
 ```
 
 
-
 ```{exercise, name = "Tuning the M-H sampler for the Banana function"}
 Plot a contour plot of this function (it should look like a banana):
 
@@ -66,3 +65,171 @@ c. Why is it difficult to come up with an efficient M-H proposal distribution fo
 d. Suggest a proposal that will substantially outperform (a) and (b). Hint: Adapting the distribution to the location is a good idea, but do not forget to correct if they are asymmetric.
 
 ```
+
+
+```{exercise, name = "Exploring the behavior of MCMC"}
+
+In this exercise we will focus on sampling from $Beta(8, 2)$:
+  
+a. Generate 1000 independent samples from using the built-in generator and plot the histogram. Overlap the histogram with an appropriately scaled Beta(8, 2) density.
+b. What is $E[X]$ of $X \sim Beta(8, 2)$? Estimate it using the 1000 samples from (a) and estimate the approximation error. How many more samples do we need to increase precision by 1 decimal?
+c. How autocorrelated are the 1000 samples from (a)? What is their MCMC SE and what is their effective sample size?
+d. Sample 1000 samples using rejection sampling with a uniform envelope. Plot the samples and overlap the histogram with an appropriately scaled $Beta(8, 2)$ density.
+e. How autocorrelated are the 1000 samples from (d)? What is their MCMC SE and what is their effective sample size?
+f. Sample 1000 samples using M-H. Use the proposal distribution $x_{next} \sim \text{Uniform}(x_{current} - \delta, x_{current} + \delta)$, where $\delta = 0.05$. Jumps outside of $(0, 1)$ are rejected. Start at $0.5$.
+g. How autocorrelated are the 1000 samples from (f)? What is their MCMC SE and what is their effective sample size? What is the sample acceptance rate? Plot a traceplot.
+h. How do the quantities from (h) change if we set $\delta = 0.01$ or $\delta = 2.0$?
+i. Find a better $\delta$ using grid-search.
+```
+
+
+<div class="fold">
+
+
+
+```{solution, echo = tog_ex}
+
+The solution is as follows:
+  
+a. First, we sample using the build in sampler:
+  
+```{r, echo = T}
+library(ggplot2)
+set.seed(0)
+x <- seq(0, 1, 0.01)
+z <- rbeta(1000, 8, 2)
+
+g1 <- ggplot(data.frame(x = z), aes(x = x)) + geom_histogram(bins = 20) +
+  annotate(geom = "line", x = x, y = 52 * dbeta(x, 8, 2), colour = "red")
+plot(g1)
+```
+
+b. We know the mean of a beta distribution is $\frac{\alpha}{\alpha + \beta}$, which is in our case 0.8. We now estimate it using the sample average and compute the standard error:
+
+```{r, echo = T}
+mu <- mean(z)
+SE <- sd(z) / sqrt(length(z))
+print(mu)
+print(SE)
+```
+
+To decrease the approximation error by factor 10, we need 100 times more samples.
+
+c. For the MCMC diagnostics, we'll reuse this function:
+
+```{r, echo = T}
+diagnostics <- function(z) {
+  library(mcmcse)
+  print("Autocorrelation for lags 1-10:")
+  print(round(acf(z, plot = F)$acf[1:10], 2))
+  cat(sprintf("Estimate: %.3f, MCMC SE: %.3f, Naive SE: %.3f, ESS: %.0f\n", 
+              mean(z),
+              mcse(z)$se, 
+              sd(z) / sqrt(length(z)),
+              ess(z)))
+}
+
+diagnostics(z)
+```
+
+d. Now we implement rejection sampling:
+
+```{r, echo = T}
+set.seed(0)
+a0 <- 8
+b0 <- 2
+m  <- 1000
+# find maximum to use for envelope
+res <- optim(0.5, fn = dbeta, lower = 0, upper = 1, method = "L-BFGS-B", 
+             shape1 = a0, shape2 = b0, control = list(fnscale = -1))
+M  <- res$value
+
+z_rej <- array(NA, dim = m)
+for (i in 1:m) {
+  repeat {
+    x0 <- runif(1)
+    u  <- runif(1)
+    if (dbeta(x0, a0, b0) / M >= u) break
+  }
+  z_rej[i] <- x0
+}
+
+g1 <- ggplot(data.frame(x = z_rej), aes(x = x)) + geom_histogram(bins = 20) +
+  annotate(geom = "line", x = x, y = 52 * dbeta(x, 8, 2), colour = "red")
+plot(g1)
+```
+
+e. Rejection sampling generates independent samples:
+
+```{r, echo = T}
+diagnostics(z_rej)
+```
+
+f. Now we implement a Metropolis-Hasting sampler:
+
+```{r, echo = T}
+
+beta_lpdf <- function(x, alpha = 8, beta = 2) {
+  dbeta(x, shape1 = alpha, shape2 = beta, log = T)
+}
+
+mh <- function(z0 = 0.5, delta = 0.1, m = 10000, seed = NA, target_f = beta_lpdf) {
+  z_mh <- array(0, dim = m )
+  z_mh[1] <- z0 
+  rej <- 0
+  for (i in 2:m) {
+    proposal <- runif(1, z_mh[i-1] - delta, z_mh[i-1] + delta) # q
+    p <- exp(target_f(proposal) - target_f(z_mh[i-1])) 
+    if (runif(1) < p & !is.nan(p)) {
+      z_mh[i] <- proposal
+    } else {
+      rej <- rej + 1
+      z_mh[i] <- z_mh[i - 1]
+    }
+  }
+  return (list(z_mh = z_mh, accept_rate = 1 - rej / m))
+}
+
+
+res <- mh(z0 = 0.5, m = 1000, delta = 0.05)
+
+g1 <- ggplot(data.frame(x = res$z_mh), aes(x = x)) + geom_histogram(bins = 20) +
+  annotate(geom = "line", x = x, y = 52 * dbeta(x, 8, 2), colour = "red")
+plot(g1)
+
+```
+
+g. M-H generates dependent samples:
+
+```{r, echo = T}
+diagnostics(res$z_mh)
+print(res$accept_rate)
+```
+
+h. Very large or very small step sizes both result in a lot of positive autocorrelation:
+
+```{r, echo = T}
+res <- mh(z0 = 0.5, m = 1000, delta = 0.01)
+diagnostics(res$z_mh)
+print(res$accept_rate)
+
+res <- mh(z0 = 0.5, m = 1000, delta = 2.0)
+diagnostics(res$z_mh)
+print(res$accept_rate)
+```
+
+i. Finally, we check which $\delta$ give us the best results ($\delta \approx 0.45$):
+
+```{r, echo = T}
+deltas <- seq(0.05, 1, 0.05)
+set.seed(0)
+for (delta in deltas) {
+  res <- mh(z0 = 0.5, m = 100000, delta = delta)
+  z_mh <- res$z_mh
+  print(c(delta, ess(z_mh), res$accept_rate))
+}
+```
+
+```
+</div>
+

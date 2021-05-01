@@ -24,7 +24,7 @@
 <meta name="author" content="Erik Štrumbelj, Gašper Fijavž, and Žiga Virk" />
 
 
-<meta name="date" content="2021-04-29" />
+<meta name="date" content="2021-05-01" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -52,6 +52,43 @@
 
 
 
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
@@ -133,7 +170,7 @@ $(document).ready(function() {
 <li>Implement the logistic regression likelihood with an arbitrary number of coefficients (same as above, but <span class="math inline">\(\mu_i = \beta^Tx_i\)</span>, where <span class="math inline">\(x_i\)</span> is now a vector) and combine it with a weakly-informative standard normal prior <span class="math inline">\(\beta_i \sim N(0, 100)\)</span> to get a function that is proportional to the posterior distribution of the logistic regression model.</li>
 <li>Use your own implementation of Metropolis-Hastings with a standard normal proposal to infer the parameters on the toy dataset. Generate 4 independent chains from the posterior with 10000 samples each. Inspect traceplots, rejection rate and lag-k covariances and compute effective sample size (ESS) for each parameter. You may use a library for MCMC variance estimation. Discuss if there is some reason for concern that the Markov chain is problematic.</li>
 <li>Do your best to improve the efficiency of the sampler by changing the covariance matrix of the proposal distribution. Report the rejection rate and ESS for the most efficient M-H sampler you get. Compare with those obtained in (3) and discuss.</li>
-<li>Estimate posterior means of <span class="math inline">\(\beta_i\)</span> using the most efficient sampler. Compare with the ground truth. Estimate the posterior probability <span class="math inline">\(P(|\beta_3| &gt; \frac{1}{10}|\text{data})\)</span>.
+<li>Estimate posterior means of <span class="math inline">\(\beta_i\)</span> using the most efficient sampler. Compare with the ground truth and a MLE fit of logistic regression (you may use a third party library for the GLM). Estimate the posterior probability <span class="math inline">\(P(|\beta_3| &gt; \frac{1}{10}|\text{data})\)</span>.
 </div>
 </li>
 </ol>
@@ -157,6 +194,202 @@ $(document).ready(function() {
 </ol>
 </div>
 
+
+<div class="exercise">
+<p><span id="exr:unnamed-chunk-4" class="exercise"><strong>Exercise 5.3  (Exploring the behavior of MCMC)  </strong></span> In this exercise we will focus on sampling from <span class="math inline">\(Beta(8, 2)\)</span>:</p>
+<ol style="list-style-type: lower-alpha">
+<li>Generate 1000 independent samples from using the built-in generator and plot the histogram. Overlap the histogram with an appropriately scaled Beta(8, 2) density.</li>
+<li>What is <span class="math inline">\(E[X]\)</span> of <span class="math inline">\(X \sim Beta(8, 2)\)</span>? Estimate it using the 1000 samples from (a) and estimate the approximation error. How many more samples do we need to increase precision by 1 decimal?</li>
+<li>How autocorrelated are the 1000 samples from (a)? What is their MCMC SE and what is their effective sample size?</li>
+<li>Sample 1000 samples using rejection sampling with a uniform envelope. Plot the samples and overlap the histogram with an appropriately scaled <span class="math inline">\(Beta(8, 2)\)</span> density.</li>
+<li>How autocorrelated are the 1000 samples from (d)? What is their MCMC SE and what is their effective sample size?</li>
+<li>Sample 1000 samples using M-H. Use the proposal distribution <span class="math inline">\(x_{next} \sim \text{Uniform}(x_{current} - \delta, x_{current} + \delta)\)</span>, where <span class="math inline">\(\delta = 0.05\)</span>. Jumps outside of <span class="math inline">\((0, 1)\)</span> are rejected. Start at <span class="math inline">\(0.5\)</span>.</li>
+<li>How autocorrelated are the 1000 samples from (f)? What is their MCMC SE and what is their effective sample size? What is the sample acceptance rate? Plot a traceplot.</li>
+<li>How do the quantities from (h) change if we set <span class="math inline">\(\delta = 0.01\)</span> or <span class="math inline">\(\delta = 2.0\)</span>?</li>
+<li>Find a better <span class="math inline">\(\delta\)</span> using grid-search.
+</div>
+</li>
+</ol>
+<div class="fold">
+
+
+
+
+<div class="solution">
+<p> <span class="solution"><em>Solution. </em></span>  The solution is as follows:</p>
+<ol style="list-style-type: lower-alpha">
+<li>First, we sample using the build in sampler:
+</div>
+</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
+<span class="kw">set.seed</span>(<span class="dv">0</span>)
+x &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">0.01</span>)
+z &lt;-<span class="st"> </span><span class="kw">rbeta</span>(<span class="dv">1000</span>, <span class="dv">8</span>, <span class="dv">2</span>)
+
+g1 &lt;-<span class="st"> </span><span class="kw">ggplot</span>(<span class="kw">data.frame</span>(<span class="dt">x =</span> z), <span class="kw">aes</span>(<span class="dt">x =</span> x)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_histogram</span>(<span class="dt">bins =</span> <span class="dv">20</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">annotate</span>(<span class="dt">geom =</span> <span class="st">&quot;line&quot;</span>, <span class="dt">x =</span> x, <span class="dt">y =</span> <span class="dv">52</span> <span class="op">*</span><span class="st"> </span><span class="kw">dbeta</span>(x, <span class="dv">8</span>, <span class="dv">2</span>), <span class="dt">colour =</span> <span class="st">&quot;red&quot;</span>)
+<span class="kw">plot</span>(g1)</code></pre></div>
+<p><img src="bookdown-ma2_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<ol start="2" style="list-style-type: lower-alpha">
+<li>We know the mean of a beta distribution is <span class="math inline">\(\frac{\alpha}{\alpha + \beta}\)</span>, which is in our case 0.8. We now estimate it using the sample average and compute the standard error:</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mu &lt;-<span class="st"> </span><span class="kw">mean</span>(z)
+SE &lt;-<span class="st"> </span><span class="kw">sd</span>(z) <span class="op">/</span><span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">length</span>(z))
+<span class="kw">print</span>(mu)</code></pre></div>
+<pre><code>## [1] 0.8059453</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(SE)</code></pre></div>
+<pre><code>## [1] 0.003804918</code></pre>
+<p>To decrease the approximation error by factor 10, we need 100 times more samples.</p>
+<ol start="3" style="list-style-type: lower-alpha">
+<li>For the MCMC diagnostics, we'll reuse this function:</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">diagnostics &lt;-<span class="st"> </span><span class="cf">function</span>(z) {
+  <span class="kw">library</span>(mcmcse)
+  <span class="kw">print</span>(<span class="st">&quot;Autocorrelation for lags 1-10:&quot;</span>)
+  <span class="kw">print</span>(<span class="kw">round</span>(<span class="kw">acf</span>(z, <span class="dt">plot =</span> F)<span class="op">$</span>acf[<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>], <span class="dv">2</span>))
+  <span class="kw">cat</span>(<span class="kw">sprintf</span>(<span class="st">&quot;Estimate: %.3f, MCMC SE: %.3f, Naive SE: %.3f, ESS: %.0f</span><span class="ch">\n</span><span class="st">&quot;</span>, 
+              <span class="kw">mean</span>(z),
+              <span class="kw">mcse</span>(z)<span class="op">$</span>se, 
+              <span class="kw">sd</span>(z) <span class="op">/</span><span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">length</span>(z)),
+              <span class="kw">ess</span>(z)))
+}
+
+<span class="kw">diagnostics</span>(z)</code></pre></div>
+<pre><code>## Warning: package &#39;mcmcse&#39; was built under R version 4.0.5</code></pre>
+<pre><code>## mcmcse: Monte Carlo Standard Errors for MCMC
+## Version 1.4-1 created on 2020-01-29.
+## copyright (c) 2012, James M. Flegal, University of California, Riverside
+##                     John Hughes, University of Colorado, Denver
+##                     Dootika Vats, University of Warwick
+##                     Ning Dai, University of Minnesota
+##  For citation information, type citation(&quot;mcmcse&quot;).
+##  Type help(&quot;mcmcse-package&quot;) to get started.</code></pre>
+<pre><code>## [1] &quot;Autocorrelation for lags 1-10:&quot;
+##  [1]  1.00 -0.03  0.00  0.01 -0.03  0.00  0.00 -0.01 -0.04  0.01
+## Estimate: 0.806, MCMC SE: 0.004, Naive SE: 0.004, ESS: 1000</code></pre>
+<ol start="4" style="list-style-type: lower-alpha">
+<li>Now we implement rejection sampling:</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">0</span>)
+a0 &lt;-<span class="st"> </span><span class="dv">8</span>
+b0 &lt;-<span class="st"> </span><span class="dv">2</span>
+m  &lt;-<span class="st"> </span><span class="dv">1000</span>
+<span class="co"># find maximum to use for envelope</span>
+res &lt;-<span class="st"> </span><span class="kw">optim</span>(<span class="fl">0.5</span>, <span class="dt">fn =</span> dbeta, <span class="dt">lower =</span> <span class="dv">0</span>, <span class="dt">upper =</span> <span class="dv">1</span>, <span class="dt">method =</span> <span class="st">&quot;L-BFGS-B&quot;</span>, 
+             <span class="dt">shape1 =</span> a0, <span class="dt">shape2 =</span> b0, <span class="dt">control =</span> <span class="kw">list</span>(<span class="dt">fnscale =</span> <span class="op">-</span><span class="dv">1</span>))
+M  &lt;-<span class="st"> </span>res<span class="op">$</span>value
+
+z_rej &lt;-<span class="st"> </span><span class="kw">array</span>(<span class="ot">NA</span>, <span class="dt">dim =</span> m)
+<span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>m) {
+  <span class="cf">repeat</span> {
+    x0 &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="dv">1</span>)
+    u  &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="dv">1</span>)
+    <span class="cf">if</span> (<span class="kw">dbeta</span>(x0, a0, b0) <span class="op">/</span><span class="st"> </span>M <span class="op">&gt;=</span><span class="st"> </span>u) <span class="cf">break</span>
+  }
+  z_rej[i] &lt;-<span class="st"> </span>x0
+}
+
+g1 &lt;-<span class="st"> </span><span class="kw">ggplot</span>(<span class="kw">data.frame</span>(<span class="dt">x =</span> z_rej), <span class="kw">aes</span>(<span class="dt">x =</span> x)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_histogram</span>(<span class="dt">bins =</span> <span class="dv">20</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">annotate</span>(<span class="dt">geom =</span> <span class="st">&quot;line&quot;</span>, <span class="dt">x =</span> x, <span class="dt">y =</span> <span class="dv">52</span> <span class="op">*</span><span class="st"> </span><span class="kw">dbeta</span>(x, <span class="dv">8</span>, <span class="dv">2</span>), <span class="dt">colour =</span> <span class="st">&quot;red&quot;</span>)
+<span class="kw">plot</span>(g1)</code></pre></div>
+<p><img src="bookdown-ma2_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<ol start="5" style="list-style-type: lower-alpha">
+<li>Rejection sampling generates independent samples:</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">diagnostics</span>(z_rej)</code></pre></div>
+<pre><code>## [1] &quot;Autocorrelation for lags 1-10:&quot;
+##  [1]  1.00  0.01 -0.01 -0.01  0.00 -0.09 -0.03  0.05  0.01 -0.03
+## Estimate: 0.801, MCMC SE: 0.004, Naive SE: 0.004, ESS: 1000</code></pre>
+<ol start="6" style="list-style-type: lower-alpha">
+<li>Now we implement a Metropolis-Hasting sampler:</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">beta_lpdf &lt;-<span class="st"> </span><span class="cf">function</span>(x, <span class="dt">alpha =</span> <span class="dv">8</span>, <span class="dt">beta =</span> <span class="dv">2</span>) {
+  <span class="kw">dbeta</span>(x, <span class="dt">shape1 =</span> alpha, <span class="dt">shape2 =</span> beta, <span class="dt">log =</span> T)
+}
+
+mh &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">z0 =</span> <span class="fl">0.5</span>, <span class="dt">delta =</span> <span class="fl">0.1</span>, <span class="dt">m =</span> <span class="dv">10000</span>, <span class="dt">seed =</span> <span class="ot">NA</span>, <span class="dt">target_f =</span> beta_lpdf) {
+  z_mh &lt;-<span class="st"> </span><span class="kw">array</span>(<span class="dv">0</span>, <span class="dt">dim =</span> m )
+  z_mh[<span class="dv">1</span>] &lt;-<span class="st"> </span>z0 
+  rej &lt;-<span class="st"> </span><span class="dv">0</span>
+  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="op">:</span>m) {
+    proposal &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="dv">1</span>, z_mh[i<span class="op">-</span><span class="dv">1</span>] <span class="op">-</span><span class="st"> </span>delta, z_mh[i<span class="op">-</span><span class="dv">1</span>] <span class="op">+</span><span class="st"> </span>delta) <span class="co"># q</span>
+    p &lt;-<span class="st"> </span><span class="kw">exp</span>(<span class="kw">target_f</span>(proposal) <span class="op">-</span><span class="st"> </span><span class="kw">target_f</span>(z_mh[i<span class="op">-</span><span class="dv">1</span>])) 
+    <span class="cf">if</span> (<span class="kw">runif</span>(<span class="dv">1</span>) <span class="op">&lt;</span><span class="st"> </span>p <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span><span class="kw">is.nan</span>(p)) {
+      z_mh[i] &lt;-<span class="st"> </span>proposal
+    } <span class="cf">else</span> {
+      rej &lt;-<span class="st"> </span>rej <span class="op">+</span><span class="st"> </span><span class="dv">1</span>
+      z_mh[i] &lt;-<span class="st"> </span>z_mh[i <span class="op">-</span><span class="st"> </span><span class="dv">1</span>]
+    }
+  }
+  <span class="kw">return</span> (<span class="kw">list</span>(<span class="dt">z_mh =</span> z_mh, <span class="dt">accept_rate =</span> <span class="dv">1</span> <span class="op">-</span><span class="st"> </span>rej <span class="op">/</span><span class="st"> </span>m))
+}
+
+
+res &lt;-<span class="st"> </span><span class="kw">mh</span>(<span class="dt">z0 =</span> <span class="fl">0.5</span>, <span class="dt">m =</span> <span class="dv">1000</span>, <span class="dt">delta =</span> <span class="fl">0.05</span>)
+
+g1 &lt;-<span class="st"> </span><span class="kw">ggplot</span>(<span class="kw">data.frame</span>(<span class="dt">x =</span> res<span class="op">$</span>z_mh), <span class="kw">aes</span>(<span class="dt">x =</span> x)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_histogram</span>(<span class="dt">bins =</span> <span class="dv">20</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">annotate</span>(<span class="dt">geom =</span> <span class="st">&quot;line&quot;</span>, <span class="dt">x =</span> x, <span class="dt">y =</span> <span class="dv">52</span> <span class="op">*</span><span class="st"> </span><span class="kw">dbeta</span>(x, <span class="dv">8</span>, <span class="dv">2</span>), <span class="dt">colour =</span> <span class="st">&quot;red&quot;</span>)
+<span class="kw">plot</span>(g1)</code></pre></div>
+<p><img src="bookdown-ma2_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<ol start="7" style="list-style-type: lower-alpha">
+<li>M-H generates dependent samples:</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">diagnostics</span>(res<span class="op">$</span>z_mh)</code></pre></div>
+<pre><code>## [1] &quot;Autocorrelation for lags 1-10:&quot;
+##  [1] 1.00 0.96 0.93 0.89 0.85 0.82 0.78 0.75 0.71 0.68
+## Estimate: 0.769, MCMC SE: 0.015, Naive SE: 0.003, ESS: 49</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(res<span class="op">$</span>accept_rate)</code></pre></div>
+<pre><code>## [1] 0.924</code></pre>
+<ol start="8" style="list-style-type: lower-alpha">
+<li>Very large or very small step sizes both result in a lot of positive autocorrelation:</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">res &lt;-<span class="st"> </span><span class="kw">mh</span>(<span class="dt">z0 =</span> <span class="fl">0.5</span>, <span class="dt">m =</span> <span class="dv">1000</span>, <span class="dt">delta =</span> <span class="fl">0.01</span>)
+<span class="kw">diagnostics</span>(res<span class="op">$</span>z_mh)</code></pre></div>
+<pre><code>## [1] &quot;Autocorrelation for lags 1-10:&quot;
+##  [1] 1.00 0.99 0.98 0.98 0.97 0.96 0.95 0.95 0.94 0.93
+## Estimate: 0.661, MCMC SE: 0.026, Naive SE: 0.002, ESS: 9</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(res<span class="op">$</span>accept_rate)</code></pre></div>
+<pre><code>## [1] 0.987</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">res &lt;-<span class="st"> </span><span class="kw">mh</span>(<span class="dt">z0 =</span> <span class="fl">0.5</span>, <span class="dt">m =</span> <span class="dv">1000</span>, <span class="dt">delta =</span> <span class="fl">2.0</span>)
+<span class="kw">diagnostics</span>(res<span class="op">$</span>z_mh)</code></pre></div>
+<pre><code>## [1] &quot;Autocorrelation for lags 1-10:&quot;
+##  [1] 1.00 0.87 0.77 0.69 0.61 0.53 0.45 0.40 0.35 0.29
+## Estimate: 0.817, MCMC SE: 0.011, Naive SE: 0.003, ESS: 66</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(res<span class="op">$</span>accept_rate)</code></pre></div>
+<pre><code>## [1] 0.094</code></pre>
+<ol style="list-style-type: lower-roman">
+<li>Finally, we check which <span class="math inline">\(\delta\)</span> give us the best results (<span class="math inline">\(\delta \approx 0.45\)</span>):</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">deltas &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="fl">0.05</span>, <span class="dv">1</span>, <span class="fl">0.05</span>)
+<span class="kw">set.seed</span>(<span class="dv">0</span>)
+<span class="cf">for</span> (delta <span class="cf">in</span> deltas) {
+  res &lt;-<span class="st"> </span><span class="kw">mh</span>(<span class="dt">z0 =</span> <span class="fl">0.5</span>, <span class="dt">m =</span> <span class="dv">100000</span>, <span class="dt">delta =</span> delta)
+  z_mh &lt;-<span class="st"> </span>res<span class="op">$</span>z_mh
+  <span class="kw">print</span>(<span class="kw">c</span>(delta, <span class="kw">ess</span>(z_mh), res<span class="op">$</span>accept_rate))
+}</code></pre></div>
+<pre><code>## [1]    0.05000 1243.20859    0.91255
+## [1]    0.10000 3224.10612    0.82548
+## [1]    0.15000 6072.11044    0.74286
+## [1]     0.2000 10923.9452     0.6666
+## [1]     0.25000 14771.25548     0.59709
+## [1]     0.30000 18929.59735     0.53188
+## [1]     0.35000 20056.93559     0.47743
+## [1]     0.40000 20312.91161     0.42863
+## [1]     0.45000 21657.12638     0.38509
+## [1]     0.50000 20585.58109     0.35362
+## [1]     0.55000 18116.50217     0.31804
+## [1]     0.60000 15085.77452     0.29259
+## [1]     0.65000 15443.81522     0.27177
+## [1]     0.70000 15555.86487     0.25229
+## [1]     0.75000 14759.43860     0.23491
+## [1]     0.80000 11285.92362     0.22028
+## [1]     0.85000 11544.03435     0.20895
+## [1]     0.90000 10154.84573     0.19674
+## [1]     0.95000 11837.77004     0.18569
+## [1]    1.00000 8862.83973    0.17966</code></pre>
+<p>```</p>
+</div>
 
 </div>
             </section>
